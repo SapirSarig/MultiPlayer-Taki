@@ -30,7 +30,7 @@ export default class Lobby extends React.Component {
             <div className ="userLisr">
                 {Object.values(users).map((userName) => {
                     <div>{userName}</div>
-                    console.log("from map: " + userName);
+                    console.log("from map:aaaa " + userName);
                 })}
             </div>
         );
