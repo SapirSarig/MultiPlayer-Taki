@@ -13,7 +13,7 @@ userManagement.get('/', auth.userAuthentication, (req, res) => {
 });
 
 userManagement.get('/allUsers', auth.userAuthentication, (req, res) => {
-	res.json(auth.userList);
+	res.json(userList);
 });
 
 userManagement.post('/addUser', auth.addUserToAuthList, (req, res) => {		
