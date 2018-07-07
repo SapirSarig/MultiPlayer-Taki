@@ -1,40 +1,68 @@
 const userList = {};
 
-function userAuthentication(req, res, next) {		
-	if (userList[req.session.id] === undefined) {				
-		res.sendStatus(401);		
-	} else {		
+function userAuthentication(req, res, next) {
+	if (userList[req.session.id] === undefined) {
+		res.sendStatus(401);
+	} else {
 		next();
 	}
 }
 
-function addUserToAuthList(req, res, next) {	
+function addUserToAuthList(req, res, next) {
 	if (userList[req.session.id] !== undefined) {
 		res.status(403).send('user already exists');
-	} else {		
+	} else {
 		for (sessionid in userList) {
 			const name = userList[sessionid];
 			if (name === req.body) {
 				res.status(403).send('user name already exists');
 				return;
 			}
-		}		
+		}
 		userList[req.session.id] = req.body;
 		next();
 	}
 }
 
-function removeUserFromAuthList(req, res, next) {	
+function removeUserFromAuthList(req, res, next) {
 	if (userList[req.session.id] === undefined) {
 		res.status(403).send('user does not exist');
-	} else {						
+	} else {
 		delete userList[req.session.id];
 		next();
 	}
 }
 
-function getUserInfo(id) {	
-    return {name: userList[id]};
+function getUserInfo(id) {
+	return { name: userList[id] };
 }
 
-module.exports = {userAuthentication, addUserToAuthList, removeUserFromAuthList, getUserInfo, userList}
+function gameAuthentication(req, res, next) {
+	if (gamesList[req.body.name] === undefined) {
+		res.sendStatus(401);
+	} else {
+		next();
+	}
+}
+
+function addGameToAuthList(req, res, next) {
+	const currentGame = gamesList.find(game => game.name === req.body.name);
+
+	if(currentGame){ 
+		res.status(403).send('game name already exists');
+		return;
+	}
+/*for (game in gamesList) {
+		const name = gamesList[game].name;
+		if (name === req.body.name) {
+			res.status(403).send('game name already exists');
+			return;
+		}
+	}*/
+	console.log('body' ,req.body);
+	//gamesList.push(req.body);
+
+	next();
+}
+
+module.exports = { userAuthentication, addUserToAuthList, removeUserFromAuthList, getUserInfo, gameAuthentication, addGameToAuthList, userList }

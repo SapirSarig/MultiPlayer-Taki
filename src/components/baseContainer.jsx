@@ -4,8 +4,8 @@ import LoginModal from './login-modal.jsx';
 import ChatContaier from './chatContainer.jsx';
 import Lobby from './Lobby.jsx'
 export default class BaseContainer extends React.Component {
-    constructor(args) {
-        super(...args);
+    constructor(props) {
+        super(...props);
         this.state = {
             showLogin: true,
             currentUser: {

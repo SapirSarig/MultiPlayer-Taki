@@ -3,8 +3,8 @@ import ReactDOM from 'react-dom';
 import takiImage from './resources/takiLogo.jpg';
 
 export default class LoginModal extends React.Component {
-    constructor(args) {
-        super(...args);
+    constructor(props) {
+        super(props);
 
         this.state ={
             errMessage: ""
