@@ -13,7 +13,7 @@ userManagement.get('/', auth.userAuthentication, (req, res) => {
 });
 
 userManagement.get('/allUsers', auth.userAuthentication, (req, res) => {
-	res.json(userList);
+	res.json(auth.userList);
 });
 
 userManagement.post('/addUser', auth.addUserToAuthList, (req, res) => {		
@@ -31,6 +31,5 @@ userManagement.get('/logout', [
 		res.sendStatus(200);		
 	}]
 );
-
 
 module.exports = userManagement;
