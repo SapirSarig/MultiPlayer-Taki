@@ -53,13 +53,14 @@ export default class BaseContainer extends React.Component {
 
     
     renderLobbyRoom() {
+        const {currentUser} = this.state;
         return(
             <div className="lobby-base-container">
                 <div className="user-info-area">
-                    Hello {this.state.currentUser.name}
+                    Hello {currentUser.name}
                     <button className="logout btn" onClick={this.logoutHandler}>Logout</button>
                 </div>
-                <Lobby />
+                <Lobby userName = {currentUser.name}/>
             </div>
         )
     }

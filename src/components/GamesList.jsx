@@ -38,11 +38,12 @@ export default class GamesList extends React.Component {
 
     render() {
         const { games } = this.state;
+        const {userName} = this.props;
         return (
 
             <div className="gameList">
                 {games.map(currGame => (
-                    <GameInList key={currGame.id} currGame={currGame} />)
+                    <GameInList key={currGame.id} currGame={currGame} userName={userName}/>)
                 )}
             </div>
         );
