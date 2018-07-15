@@ -2,8 +2,6 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import baseContainer from './baseContainer.jsx'
 
-let gameId = 1;
-
 export default class CreateNewGame extends React.Component {
     constructor(props) {
         super(props);
@@ -30,10 +28,8 @@ export default class CreateNewGame extends React.Component {
 
     handleCreateGame(e) {
         const { changeHiddenProperty } = this.props;
-        const game = this.state.currGame;
-        game.id = gameId;
-        gameId++;
-        this.setState({ currGame: game });
+        // const game = this.state.currGame;
+        // this.setState({ currGame: game });
         const { currGame } = this.state;
 
         e.preventDefault();

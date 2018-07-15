@@ -44,13 +44,6 @@ export default class GamesList extends React.Component {
                 {games.map(currGame => (
                     <GameInList key={currGame.id} currGame={currGame} />)
                 )}
-                {/* {games.map(({ name }, index) =>
-                    (
-                        <div key={index}>
-                            <div>{name}</div>
-                        </div>
-                    )
-                )} */}
             </div>
         );
     }
