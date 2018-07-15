@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { gamesList } from '../server/auth.js'
+import GameInList from './GameInList.jsx';
 
 export default class GamesList extends React.Component {
     constructor(props) {
@@ -38,15 +39,18 @@ export default class GamesList extends React.Component {
     render() {
         const { games } = this.state;
         return (
-            
-            <div className="userList">
-                {games.map(({ name }, index) =>
+
+            <div className="gameList">
+                {games.map(currGame => (
+                    <GameInList key={currGame.id} currGame={currGame} />)
+                )}
+                {/* {games.map(({ name }, index) =>
                     (
                         <div key={index}>
                             <div>{name}</div>
                         </div>
                     )
-                )}
+                )} */}
             </div>
         );
     }

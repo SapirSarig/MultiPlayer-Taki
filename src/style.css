@@ -101,3 +101,12 @@
     width: 88px;
     margin: 0 2px 0 5px;
 }
+
+[class*="game_"] {
+    border-style: solid;
+    border-color: red;
+}
+
+.gameInfo{
+    padding: 5px;   
+}
