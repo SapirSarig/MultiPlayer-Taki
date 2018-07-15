@@ -27,7 +27,8 @@ export default class GameInList extends React.Component {
     render() {
         const { currGame, userName } = this.props;
         let activeGameStyle = currGame.Active ? { border: 'solid green' } : { border: 'solid red' }
-        let showRemoveBtn = currGame.userName === userName;
+        let userCanRemove = currGame.userName === userName;
+        let noOneRegisterd = currGame.numOfRegisterd === 0;
 
         return (
             <div className="gameInfo">
@@ -45,7 +46,7 @@ export default class GameInList extends React.Component {
                         Game's Status: {currGame.Active ? "Game Started" : "Game didn't start"}
                     </div>
                     <button className="joinGameBtn" hidden={currGame.Active} onClick={() => this.updateCurrGame(currGame)}>Join Game</button>
-                    <button hidden={!showRemoveBtn} className="RemoveGame" onClick={() => this.removeCurrGame(currGame)}> Remove Game </button>
+                    <button hidden={!(userCanRemove && noOneRegisterd)} className="RemoveGame" onClick={() => this.removeCurrGame(currGame)}> Remove Game </button>
                 </div>
             </div>
         );
