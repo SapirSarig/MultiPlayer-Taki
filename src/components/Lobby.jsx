@@ -28,14 +28,14 @@ export default class Lobby extends React.Component {
 
     render() {
         const { hideCreateNewGameForm } = this.state;
-        const {userName} = this.props;
+        const {userName, updateUserInGame} = this.props;
 
         return (
             <div className="lobby">
                 <div className="mainLobby" hidden={!hideCreateNewGameForm}>
                     <LoggedInUsersList />
                     <button onClick={()=>this.changeHiddenProperty()}> Create Game </button>
-                    <GamesList userName = {userName}/>
+                    <GamesList userName = {userName} updateUserInGame = {updateUserInGame}/>
                 </div>
                 <div className="createNewGame" hidden={hideCreateNewGameForm}>
                     <CreateNewGame changeHiddenProperty={this.changeHiddenProperty}  />

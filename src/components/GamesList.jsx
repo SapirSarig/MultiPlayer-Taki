@@ -32,18 +32,18 @@ export default class GamesList extends React.Component {
                 this.timeoutId = setTimeout(this.getGameListContent, 1000);
                 return response.json();
             })
-            .then((games) => games && games.length > 0 && this.setState({ games }))
+            .then((games) => games && games.length >= 0 && this.setState({ games }))
             .catch(err => { throw err });
     }
 
     render() {
         const { games } = this.state;
-        const {userName} = this.props;
+        const {userName, updateUserInGame} = this.props;
         return (
 
             <div className="gameList">
                 {games.map(currGame => (
-                    <GameInList key={currGame.id} currGame={currGame} userName={userName}/>)
+                    <GameInList key={currGame.id} currGame={currGame} userName={userName} updateUserInGame = {updateUserInGame}/>)
                 )}
             </div>
         );

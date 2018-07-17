@@ -3,16 +3,20 @@ import ReactDOM from 'react-dom';
 import LoginModal from './login-modal.jsx';
 import ChatContaier from './chatContainer.jsx';
 import Lobby from './Lobby.jsx'
+import WaitingForGameScreen from './WaitingForGameScreen.jsx';
+
 export default class BaseContainer extends React.Component {
     constructor(props) {
         super(...props);
         this.state = {
             showLogin: true,
             currentUser: {
-                name: ''
+                name: '',
+                inGame:false
             }
         };
         
+        this.updateUserInGame = this.updateUserInGame.bind(this);
         this.handleSuccessedLogin = this.handleSuccessedLogin.bind(this);
         this.handleLoginError = this.handleLoginError.bind(this);
         this.fetchUserInfo = this.fetchUserInfo.bind(this);
@@ -51,16 +55,26 @@ export default class BaseContainer extends React.Component {
         )
     }
 
+    updateUserInGame(value)
+    {
+        const currUser = this.state.currentUser;
+        currUser.inGame = value;
+        this.setState({currentUser:currUser});
+    }
     
     renderLobbyRoom() {
         const {currentUser} = this.state;
+        if(currentUser.inGame)
+        {
+           return(<WaitingForGameScreen/>) 
+        }
         return(
             <div className="lobby-base-container">
                 <div className="user-info-area">
                     Hello {currentUser.name}
                     <button className="logout btn" onClick={this.logoutHandler}>Logout</button>
                 </div>
-                <Lobby userName = {currentUser.name}/>
+                <Lobby userName = {currentUser.name} updateUserInGame = {this.updateUserInGame}/>
             </div>
         )
     }

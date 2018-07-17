@@ -35,5 +35,18 @@ gamesManagement.post('/updateGameData', (req, res) => {
     res.sendStatus(201);
 });
 
+gamesManagement.post('/removeGame', (req,res) =>{
+    const gameIndex = findGameIndex(req);
+    console.log(gamesList[gameIndex]);
+    console.log("num of games BEFORE: " +gamesList.length);
+    gamesList.splice(gameIndex,1);    
+    console.log("num of games AFTER: " +gamesList.length);
+    res.sendStatus(201);
+});
+
+function findGameIndex(req){
+    const bodyObj = JSON.parse(req.body);
+    return gamesList.findIndex(game => game.name === bodyObj.name);
+}
 
 module.exports = gamesManagement;
