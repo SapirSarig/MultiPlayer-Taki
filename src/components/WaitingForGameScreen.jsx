@@ -5,52 +5,60 @@ export default class WaitingForGameScreen extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            currGame: {}
         }
-        this.updateCurrGameData = this.updateCurrGameData.bind(this);
+        this.getCurrGameData = this.getCurrGameData.bind(this);
         this.updateUserQuitGame = this.updateUserQuitGame.bind(this);
     }
 
-    updateUserQuitGame(){
-        const {user} = this.props;
-        const gameToUpdate = user.usersGame;
-        console.log("BEFORE Quit the game: " + gameToUpdate);
-        console.log("BEFORE numOfRegisterd--")
+    componentDidMount() {
+        this.getCurrGameData();
+    }
+
+    updateUserQuitGame() {
+        // const { user } = this.props;
+        const gameToUpdate = this.state.currGame;
         gameToUpdate.numOfRegisterd--;
-        console.log("AFTER numOfRegisterd--")
         fetch('/games/updateGameData', { method: 'POST', body: JSON.stringify(gameToUpdate), credentials: 'include' });
         this.props.updateUserInGame(false, '');
     }
 
-    updateCurrGameData()
-    {
-        const {user} = this.props;
 
-        fetch(`/games/getGameByName/gameName=?${user.usersGame.name}`, { method: 'GET', credentials: 'include' })
-        // .then((response) => {
-        //     if (!response.ok) {
-        //         throw response;
-        //     }
-        //     this.timeoutId = setTimeout(this.updateCurrGameData, 1000);
-        //     return response.json();
-        // })
-        // .then((games) => games && games.length >= 0 && this.setState({ games }))
-        // .catch(err => { throw err });
+    getCurrGameData() {
+        const { user } = this.props;
 
+        console.log("getCurrGameData")
+        return fetch(`/games/getGameById/?id=${user.usersGame.id}`, { method: 'GET', credentials: 'include' })
+            .then((response) => {
+                if (!response.ok) {
+                    throw response;
+                }
+                this.timeoutId = setTimeout(this.getCurrGameData, 1000);
+                return response.json();
+            })
+            .then((currGame) => currGame && this.setState({ currGame }))
+            .catch(err => { throw err });
     }
 
     render() {
-        const {user} = this.props;
-        let hiddeQuitBtn = user.usersGame.Active;
+        const { user } = this.props;
+        const { currGame } = this.state;
+        let isGameActive = currGame.Active;
 
-        //this.updateCurrGameData();
+        console.log("isGameActive? " + isGameActive);
+        console.log("user= " + user);
 
-        console.log("hidde btn? " + hiddeQuitBtn);
-        console.log("user= " +user);
-        return (
-            <div className="WaitingScreen">
-                <button hidden={hiddeQuitBtn} onClick={() => this.updateUserQuitGame()}>
-                    Quit Game</button>
-            </div>
-        )
+        if (!isGameActive) {
+            return (
+                <div className="GameContainer">
+                    <div className="WaitingScreen" >
+                        <div> There are {currGame.numOfRegisterd} players in the game <br />waiting for {currGame.numOfPlayers - currGame.numOfRegisterd} players to join </div>
+                        <button onClick={() => this.updateUserQuitGame()}>
+                            Quit Game</button>
+                    </div>
+                </div>
+            )
+        }
+        return <div> GAME BOARD </div>
     }
 }

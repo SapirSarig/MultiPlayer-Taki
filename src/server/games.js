@@ -10,11 +10,11 @@ gamesManagement.get('/allGames', auth.userAuthentication, (req, res) => {
     res.json(gamesList);
 });
 
-// gamesManagement.get('/getGameByName', (req,res))
-// {
-//     const currentGame = gamesList.find(game => game.name === req.body.name);
-//     res.json(currentGame);
-// }
+gamesManagement.get('/getGameById', (req, res) => {
+    const id = req.query.id;
+    const currentGame = gamesList.find(game => game.id === Number(id));
+    res.json(currentGame);
+});
 
 gamesManagement.post('/addGame', auth.userAuthentication, (req, res) => {
     const bodyObj = JSON.parse(req.body);
@@ -41,16 +41,16 @@ gamesManagement.post('/updateGameData', (req, res) => {
     res.sendStatus(201);
 });
 
-gamesManagement.post('/removeGame', (req,res) =>{
+gamesManagement.post('/removeGame', (req, res) => {
     const gameIndex = findGameIndex(req);
     console.log(gamesList[gameIndex]);
-    console.log("num of games BEFORE: " +gamesList.length);
-    gamesList.splice(gameIndex,1);    
-    console.log("num of games AFTER: " +gamesList.length);
+    console.log("num of games BEFORE: " + gamesList.length);
+    gamesList.splice(gameIndex, 1);
+    console.log("num of games AFTER: " + gamesList.length);
     res.sendStatus(201);
 });
 
-function findGameIndex(req){
+function findGameIndex(req) {
     const bodyObj = JSON.parse(req.body);
     return gamesList.findIndex(game => game.name === bodyObj.name);
 }
