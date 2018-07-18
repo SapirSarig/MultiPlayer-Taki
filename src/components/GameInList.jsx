@@ -17,7 +17,7 @@ export default class GameInList extends React.Component {
         console.log("****updateSingleGame****")
         gameToUpdate.numOfRegisterd++;
         this.setState({userJoined:true});
-        this.props.updateUserInGame(true);
+        this.props.updateUserInGame(true,gameToUpdate);
         if (gameToUpdate.numOfRegisterd.toString() === gameToUpdate.numOfPlayers) {
             gameToUpdate.Active = true;
         }

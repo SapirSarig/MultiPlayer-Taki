@@ -12,7 +12,8 @@ export default class BaseContainer extends React.Component {
             showLogin: true,
             currentUser: {
                 name: '',
-                inGame:false
+                inGame:false,
+                usersGame:{}
             }
         };
         
@@ -55,10 +56,11 @@ export default class BaseContainer extends React.Component {
         )
     }
 
-    updateUserInGame(value)
+    updateUserInGame(isInGame, game)
     {
         const currUser = this.state.currentUser;
-        currUser.inGame = value;
+        currUser.inGame = isInGame;
+        currUser.usersGame = game;
         this.setState({currentUser:currUser});
     }
     
@@ -66,7 +68,7 @@ export default class BaseContainer extends React.Component {
         const {currentUser} = this.state;
         if(currentUser.inGame)
         {
-           return(<WaitingForGameScreen/>) 
+           return(<WaitingForGameScreen user = {currentUser} updateUserInGame = {this.updateUserInGame}/>) 
         }
         return(
             <div className="lobby-base-container">

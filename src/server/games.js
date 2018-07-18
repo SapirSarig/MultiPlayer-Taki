@@ -10,6 +10,12 @@ gamesManagement.get('/allGames', auth.userAuthentication, (req, res) => {
     res.json(gamesList);
 });
 
+// gamesManagement.get('/getGameByName', (req,res))
+// {
+//     const currentGame = gamesList.find(game => game.name === req.body.name);
+//     res.json(currentGame);
+// }
+
 gamesManagement.post('/addGame', auth.userAuthentication, (req, res) => {
     const bodyObj = JSON.parse(req.body);
     const currentGame = gamesList.find(game => game.name === bodyObj.name);
