@@ -1,6 +1,6 @@
 const cardColors = { 0: "blue", 1: "red", 2: "green", 3: "yellow" }
 const numOfColors = 4;
-const numOfCardsForEachPlayer = 8;
+const numOfCardsForEachPlayer = 1;
 let setStateInBoardCB;
 let takenCardsCounter = 0;
 let turnIndex = 2;
@@ -557,7 +557,7 @@ let shuffleSound;
 
     function playerHasNo2PlusCards(player, numOfPlayers, deck) {
         let res = true;
-        if (this.getCardsFromRivalArrbByValue(player.cards, "2plus").length > 0) {
+        if (getCardsFromRivalArrbByValue(player.cards, "2plus").length > 0) {
             res = false;
         }
         return res;
@@ -673,31 +673,31 @@ let shuffleSound;
         gameData.deck[CardIndex].taken = true;
         addTakenCardCounter(gameData);
         gameData.cardOnTop = gameData.deck[CardIndex];
-        gameStarted = true;
+        gameData.gameStarted = true;
         //this.printPlayersCards();
         //setStateInBoardCB('cardOnTop',cardOnTop);
         return gameData.deck[CardIndex];
     }
 
-    function checkStatusOnTableDeckClicked(player, deck) {
-        if (!gameOver) {
-            let isPlayerTurn = this.checkPlayerTurn(player);
+    function checkStatusOnTableDeckClicked(playerName, gameData) {
+        if (!gameData.gameOver) {
+            let isPlayerTurn = checkPlayerTurn(playerName, gameData);
             if (isPlayerTurn) {
-                if (plus2 > 0) {
-                    if (this.playerHasNo2PlusCards(player, 2, deck)) {
-                        let numOfCardsPlayerHasToTake = plus2;
+                if (gameData.plus2 > 0) {
+                    if (playerHasNo2PlusCards(gameData.players[turnIndex], gameData.numOfPlayers, gameData.deck)) {
+                        let numOfCardsPlayerHasToTake = gameData.plus2;
                         for (let i = 0; i < numOfCardsPlayerHasToTake; i++) {
-                            this.addCardToPlayersArr(players[1].cards, deck);
+                            addCardToPlayersArr(gameData.players[turnIndex].cards, gameData.deck);
                         }
                     }
                 }
                 else {
-                    let hasCardsToUse = this.checkPlayerCards(player);
+                    let hasCardsToUse = checkPlayerCards(playerName);
                     if (hasCardsToUse) {
                         wrongSound.play();
                     }
                     else if (!hasCardsToUse && !openTaki) {
-                        this.addCardToPlayersArr(player.cards, deck);
+                        addCardToPlayersArr(player.cards, deck);
                     }
                 }
             }
@@ -716,9 +716,10 @@ let shuffleSound;
         return res;
     }
 
-    function checkPlayerTurn(player) {
-        var res = false;
-        if (turnIndex === player.index) {
+    function checkPlayerTurn(player, gameData) {
+        const playerIndex = gameData.playersName.findIndex((pl)=>pl === player);
+        let res = false;
+        if (gameData.turnIndex === playerIndex) {
             res = true;
         }
         return res;
@@ -989,4 +990,4 @@ let shuffleSound;
         }
     }
 
-    module.exports ={createDeck, shareCardsToPlayers, drawOpeningCard}
+    module.exports ={createDeck, shareCardsToPlayers, drawOpeningCard, checkStatusOnTableDeckClicked}

@@ -8,13 +8,13 @@ class TableDeck extends Component {
     }
 
     render() {
-        const { cardOnTop, /*checkStatusOnTableDeckClicked*/ } = this.props;
+        const { cardOnTop, checkStatusOnTableDeckClicked } = this.props;
 
         return (
             <div className="tableDeck">
-                <div className="tableDeckCardsContainer">
-                    <CardComponent className="card" card={cardOnTop} isOpenCard={false} isInDeck={true} /*checkStatusOnTableDeckClicked={checkStatusOnTableDeckClicked}*/ />
-                    <CardComponent className="card" card={cardOnTop} isOpenCard={true} isInDeck={true} /*checkStatusOnTableDeckClicked={checkStatusOnTableDeckClicked}*/ />
+                <div className="tableDeckCardsContainer s">
+                    <CardComponent className="card"  card={cardOnTop} isOpenCard={false} isInDeck={true} checkStatusOnTableDeckClicked={checkStatusOnTableDeckClicked} />
+                    <CardComponent className="card" card={cardOnTop} isOpenCard={true} isInDeck={true} checkStatusOnTableDeckClicked={checkStatusOnTableDeckClicked} />
                 </div>
             </div>
         );

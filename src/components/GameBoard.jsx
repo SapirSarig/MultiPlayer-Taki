@@ -11,6 +11,7 @@ export default class GameBoard extends React.Component {
 
         this.getCurrGameData = this.getCurrGameData.bind(this);
         this.createGameData = this.createGameData.bind(this);
+        this.checkStatusOnTableDeckClicked = this.checkStatusOnTableDeckClicked.bind(this);
         this.state = {
             gameData: {}
         }
@@ -39,6 +40,16 @@ export default class GameBoard extends React.Component {
             .catch(err => { throw err });
     }
 
+    checkStatusOnTableDeckClicked() {
+        const { gameId, user } = this.props;
+        const gameToCheck = {
+            gameId: gameId,
+            userName: user.name
+        }
+        fetch('/games/checkStatusOnTableDeckClicked', { method: 'POST', body: JSON.stringify(gameToCheck), credentials: 'include' })
+
+    }
+
     render() {
         const { gameData } = this.state;
         const { user } = this.props;
@@ -46,12 +57,12 @@ export default class GameBoard extends React.Component {
             <div>
                 {gameData && gameData.players && (
                     <div>
-                        <TableDeck cardOnTop={gameData.cardOnTop} /*checkStatusOnTableDeckClicked={this.checkStatusOnTableDeckClicked}*/ />
+                        <TableDeck cardOnTop={gameData.cardOnTop} checkStatusOnTableDeckClicked={this.checkStatusOnTableDeckClicked} />
                         <div>End of deck</div>
                         {gameData.players[0] && <PlayerComponent user={user}/*checkCard={this.checkCard}*/ player={gameData.players[0]} numberOfPlayer={gameData.numberOfPlayer} /*cardMarginLeft={cardMarginLeft[1]}*/ />}
-                        {gameData.players[1] &&<PlayerComponent user={user}/*checkCard={this.checkCard}*/ player={gameData.players[1]} numberOfPlayer={gameData.numberOfPlayer} /*cardMarginLeft={cardMarginLeft[1]}*/ />}
-                        {gameData.players[2] &&<PlayerComponent user={user}/*checkCard={this.checkCard}*/ player={gameData.players[2]} numberOfPlayer={gameData.numberOfPlayer} /*cardMarginLeft={cardMarginLeft[1]}*/ />}
-                        {gameData.players[3] &&<PlayerComponent user={user}/*checkCard={this.checkCard}*/ player={gameData.players[3]} numberOfPlayer={gameData.numberOfPlayer} /*cardMarginLeft={cardMarginLeft[1]}*/ />}
+                        {gameData.players[1] && <PlayerComponent user={user}/*checkCard={this.checkCard}*/ player={gameData.players[1]} numberOfPlayer={gameData.numberOfPlayer} /*cardMarginLeft={cardMarginLeft[1]}*/ />}
+                        {gameData.players[2] && <PlayerComponent user={user}/*checkCard={this.checkCard}*/ player={gameData.players[2]} numberOfPlayer={gameData.numberOfPlayer} /*cardMarginLeft={cardMarginLeft[1]}*/ />}
+                        {gameData.players[3] && <PlayerComponent user={user}/*checkCard={this.checkCard}*/ player={gameData.players[3]} numberOfPlayer={gameData.numberOfPlayer} /*cardMarginLeft={cardMarginLeft[1]}*/ />}
                     </div>)}
             </div>
         );

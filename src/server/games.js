@@ -71,6 +71,25 @@ gamesManagement.get('/createGame', (req, res) => {
     res.sendStatus(201);
 });
 
+gamesManagement.post('/checkStatusOnTableDeckClicked', (req, res) => {
+    const gameId = body.req.gameId;
+    const userName = body.req.userName;
+    const currentGame = gamesList.find(game => game.id === Number(gameId));
+
+    // const {gameData} = this.state;
+    // const { user } = this.props;
+
+    // // { players, deck, cardOnTop } = this.state;
+    GameLogic.checkStatusOnTableDeckClicked(userName, currentGame.gameData);
+    res.sendStatus(200);
+
+    // this.setState(() => {
+    //     return {
+    //         deck
+    //     };
+    // });
+});
+
 function createGame(currentGame)
 {
     currentGame.gameData.takenCardsCounter = 0;
@@ -79,6 +98,7 @@ function createGame(currentGame)
     currentGame.gameData.gameStarted = false;
     currentGame.gameData.openTaki = false;
     currentGame.gameData.cardOnTop = null;
+    currentGame.gameData.gameOver = false;
     currentGame.gameData.deck = GameLogic.createDeck();
     currentGame.gameData.players = GameLogic.shareCardsToPlayers(currentGame.numOfRegisterd, currentGame.gameData);
     currentGame.gameData.cardOnTop = GameLogic.drawOpeningCard(currentGame.gameData);
