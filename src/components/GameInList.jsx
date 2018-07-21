@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { gamesList } from '../server/auth.js';
-import WaitingForGameScreen from './WaitingForGameScreen.jsx';
+import GameRoom from './GameRoom.jsx';
 
 export default class GameInList extends React.Component {
     constructor(props) {
@@ -16,6 +16,7 @@ export default class GameInList extends React.Component {
     updateCurrGame(gameToUpdate) {
         console.log("****updateSingleGame****")
         gameToUpdate.numOfRegisterd++;
+        gameToUpdate.gameData.playersName.push(this.props.userName);
         this.setState({userJoined:true});
         this.props.updateUserInGame(true,gameToUpdate);
         if (gameToUpdate.numOfRegisterd.toString() === gameToUpdate.numOfPlayers) {

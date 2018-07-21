@@ -13,7 +13,10 @@ export default class CreateNewGame extends React.Component {
                 userName: "",
                 numOfPlayers: 0,
                 numOfRegisterd: 0,
-                Active: false
+                Active: false,
+                gameData:{
+                    playersName:[]
+                }                
             },
 
             errMessage: ""

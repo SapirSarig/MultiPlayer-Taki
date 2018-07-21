@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import LoginModal from './login-modal.jsx';
 import ChatContaier from './chatContainer.jsx';
 import Lobby from './Lobby.jsx'
-import WaitingForGameScreen from './WaitingForGameScreen.jsx';
+import GameRoom from './GameRoom.jsx';
 
 export default class BaseContainer extends React.Component {
     constructor(props) {
@@ -68,7 +68,7 @@ export default class BaseContainer extends React.Component {
         const {currentUser} = this.state;
         if(currentUser.inGame)
         {
-           return(<WaitingForGameScreen user = {currentUser} updateUserInGame = {this.updateUserInGame}/>) 
+           return(<GameRoom user = {currentUser} updateUserInGame = {this.updateUserInGame}/>) 
         }
         return(
             <div className="lobby-base-container">

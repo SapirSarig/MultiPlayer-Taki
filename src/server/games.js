@@ -2,6 +2,9 @@ const express = require('express');
 const router = express.Router();
 const auth = require('./auth');
 
+const GameLogic = require('./GameLogic.js');
+
+
 const gamesList = [];
 let gameId = 1;
 const gamesManagement = express.Router();
@@ -54,5 +57,34 @@ function findGameIndex(req) {
     const bodyObj = JSON.parse(req.body);
     return gamesList.findIndex(game => game.name === bodyObj.name);
 }
+
+gamesManagement.get('/getGameDataById', (req, res) => {
+const id = req.query.id;
+    const currentGame = gamesList.find(game => game.id === Number(id));
+    res.json(currentGame.gameData);
+});
+
+gamesManagement.get('/createGame', (req, res) => {
+    const id = req.query.id;
+    const currentGame = gamesList.find(game => game.id === Number(id));
+    createGame(currentGame);
+    res.sendStatus(201);
+});
+
+function createGame(currentGame)
+{
+    currentGame.gameData.takenCardsCounter = 0;
+    currentGame.gameData.turnIndex = 0;
+    currentGame.gameData.plus2 = 0;
+    currentGame.gameData.gameStarted = false;
+    currentGame.gameData.openTaki = false;
+    currentGame.gameData.cardOnTop = null;
+    currentGame.gameData.deck = GameLogic.createDeck();
+    currentGame.gameData.players = GameLogic.shareCardsToPlayers(currentGame.numOfRegisterd, currentGame.gameData);
+    currentGame.gameData.cardOnTop = GameLogic.drawOpeningCard(currentGame.gameData);
+    console.log(currentGame.gameData + "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
+}
+
+
 
 module.exports = gamesManagement;
