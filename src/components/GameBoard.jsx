@@ -46,7 +46,7 @@ export default class GameBoard extends React.Component {
             gameId: gameId,
             userName: user.name
         }
-        fetch('/games/checkStatusOnTableDeckClicked', { method: 'POST', body: JSON.stringify(gameToCheck), credentials: 'include' })
+        fetch('/games/checkStatusOnTableDeckClicked', { method: 'POST', body: JSON.stringify(gameToCheck), credentials: 'include' });
 
     }
 

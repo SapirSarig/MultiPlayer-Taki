@@ -72,8 +72,10 @@ gamesManagement.get('/createGame', (req, res) => {
 });
 
 gamesManagement.post('/checkStatusOnTableDeckClicked', (req, res) => {
-    const gameId = body.req.gameId;
-    const userName = body.req.userName;
+    const bodyObj = JSON.parse(req.body);
+
+    const gameId = bodyObj.gameId;
+    const userName =bodyObj.userName;
     const currentGame = gamesList.find(game => game.id === Number(gameId));
 
     // const {gameData} = this.state;
@@ -81,6 +83,8 @@ gamesManagement.post('/checkStatusOnTableDeckClicked', (req, res) => {
 
     // // { players, deck, cardOnTop } = this.state;
     GameLogic.checkStatusOnTableDeckClicked(userName, currentGame.gameData);
+    console.log(currentGame, '@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@')
+
     res.sendStatus(200);
 
     // this.setState(() => {
