@@ -680,35 +680,38 @@ let shuffleSound;
     }
 
     function checkStatusOnTableDeckClicked(playerName, gameData) {
+        console.log("************checkStatusOnTableDeckClicked****************");
         if (!gameData.gameOver) {
             let isPlayerTurn = checkPlayerTurn(playerName, gameData);
             if (isPlayerTurn) {
                 if (gameData.plus2 > 0) {
-                    if (playerHasNo2PlusCards(gameData.players[turnIndex], gameData.numOfPlayers, gameData.deck)) {
+                    if (playerHasNo2PlusCards(gameData.players[gameData.turnIndex], gameData.numOfPlayers, gameData.deck)) {
                         let numOfCardsPlayerHasToTake = gameData.plus2;
                         for (let i = 0; i < numOfCardsPlayerHasToTake; i++) {
-                            addCardToPlayersArr(gameData.players[turnIndex].cards, gameData.deck);
+                            addCardToPlayersArr(gameData.players[gameData.turnIndex].cards, gameData.deck);
                         }
                     }
                 }
                 else {
-                    let hasCardsToUse = checkPlayerCards(playerName);
+                    let hasCardsToUse = checkPlayerCards(gameData.turnIndex,gameData);
                     if (hasCardsToUse) {
-                        wrongSound.play();
+                        //wrongSound.play();
                     }
                     else if (!hasCardsToUse && !openTaki) {
-                        addCardToPlayersArr(player.cards, deck);
+                        addCardToPlayersArr(gameData.players[gameData.turnIndex].cards, gameData);
                     }
                 }
             }
         }
     }
 
-    function checkPlayerCards(player) {
+    function checkPlayerCards(playerIndex, gameData) {
+        const cards = gameData.players[playerIndex].cards;
+        console.log(cards);
         let res = false;
-        for (let i = 0; i < player.cards.length; i++) {
-            if (player.cards[i].value === cardOnTop.value || player.cards[i].color === cardOnTop.color ||
-                player.cards[i].value === "change_colorful" || player.cards[i].value === "taki_colorful") {
+        for (let i = 0; i < cards.length; i++) {
+            if (cards[i].value === gameData.cardOnTop.value || cards[i].color === gameData.cardOnTop.color ||
+                cards[i].value === "change_colorful" || cards[i].value === "taki_colorful") {
                 res = true;
                 break;
             }
