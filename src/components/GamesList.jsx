@@ -23,13 +23,13 @@ export default class GamesList extends React.Component {
     }
 
     getGameListContent() {
-        console.log("getGameListContent")
+        //console.log("getGameListContent")
         return fetch('/games/allGames', { method: 'GET', credentials: 'include' })
             .then((response) => {
                 if (!response.ok) {
                     throw response;
                 }
-                this.timeoutId = setTimeout(this.getGameListContent, 1000);
+                this.timeoutId = setTimeout(this.getGameListContent, 200);
                 return response.json();
             })
             .then((games) => games && games.length >= 0 && this.setState({ games }))

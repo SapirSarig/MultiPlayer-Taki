@@ -14,7 +14,7 @@ export default class GameInList extends React.Component {
     }
 
     updateCurrGame(gameToUpdate) {
-        console.log("****updateSingleGame****")
+        //console.log("****updateSingleGame****")
         gameToUpdate.numOfRegisterd++;
         gameToUpdate.gameData.playersName.push(this.props.userName);
         this.setState({userJoined:true});
@@ -26,7 +26,7 @@ export default class GameInList extends React.Component {
     }
 
     removeCurrGame(gameToRemove) {
-        console.log("****removeing current game*******")
+        //console.log("****removeing current game*******")
         fetch('/games/removeGame', { method: 'POST', body: JSON.stringify(gameToRemove), credentials: 'include' });
     }
 

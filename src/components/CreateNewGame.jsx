@@ -45,7 +45,7 @@ export default class CreateNewGame extends React.Component {
                         changeHiddenProperty();
                     } else {
                         if (response.status === 403) {
-                            console.log("game is already exist!!!!")
+                            //console.log("game is already exist!!!!")
                             this.setState(() => ({ errMessage: "Game name already exists, please try another one" }));
                         }
                     }

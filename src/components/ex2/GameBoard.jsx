@@ -108,7 +108,7 @@ class GameBoard extends Component {
     }
 
     checkCard(card, playerIndex) {
-        console.log(this.state.turnIndex);
+        //console.log(this.state.turnIndex);
         const { players, deck } = this.state;
         GameLogic.checkCard(playerIndex, card, numberOfPlayer, deck);
 

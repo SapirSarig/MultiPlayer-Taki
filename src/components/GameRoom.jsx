@@ -28,13 +28,13 @@ export default class GameRoom extends React.Component {
     getCurrGameData() {
         const { user } = this.props;
 
-        console.log("getCurrGameData")
+        //console.log("getCurrGameData")
         return fetch(`/games/getGameById/?id=${user.usersGame.id}`, { method: 'GET', credentials: 'include' })
             .then((response) => {
                 if (!response.ok) {
                     throw response;
                 }
-                this.timeoutId = setTimeout(this.getCurrGameData, 1000);
+                this.timeoutId = setTimeout(this.getCurrGameData, 200);
                 return response.json();
             })
             .then((currGame) => currGame && this.setState({ currGame }))
@@ -46,8 +46,8 @@ export default class GameRoom extends React.Component {
         const { currGame } = this.state;
         let isGameActive = currGame.Active;
 
-        console.log("isGameActive? " + isGameActive);
-        console.log("user= " + user);
+        //console.log("isGameActive? " + isGameActive);
+        //console.log("user= " + user);
 
         return (
             <div>

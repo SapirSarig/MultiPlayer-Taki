@@ -22,13 +22,13 @@ export default class LoggedInUsersList extends React.Component {
     }
 
     getUserListContent() {
-        console.log("getUserListContent")
+        //console.log("getUserListContent")
         return fetch('/users/allUsers', {method: 'GET', credentials: 'include'})
         .then((response) => {
             if (!response.ok){
                 throw response;
             }
-            this.timeoutId = setTimeout(this.getUserListContent, 1000);
+            this.timeoutId = setTimeout(this.getUserListContent, 200);
             return response.json();            
         })
         .then((users) => this.setState({users}))

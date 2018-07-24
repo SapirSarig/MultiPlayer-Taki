@@ -53,7 +53,7 @@ function addGameToAuthList(req, res, next) {
 		return;
 	}
 
-	console.log('body' ,req.body);
+	//console.log('body' ,req.body);
 	//gamesList.push(req.body);
 
 	next();

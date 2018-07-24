@@ -12,7 +12,7 @@ class CardComponent extends Component {
         return (
             <div>
                 {card && <div style={!isInDeck ? { marginLeft: cardMarginLeft } : null}>
-                    {isOpenCard ? <img className="card" alt="card" src={card.imgSourceFront} onClick={isInDeck ? null : () => checkCard(card, playerIndex)} />
+                    {isOpenCard ? <img className="card" alt="card" src={card.imgSourceFront} onClick={isInDeck ? null : () => checkCard(card)} />
                         : <img src={card.imgSourceBack} alt="card" className="card" onClick={isInDeck ? () => checkStatusOnTableDeckClicked() : null}  />}
 
                 </div>}
