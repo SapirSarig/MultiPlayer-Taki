@@ -80,6 +80,15 @@ gamesManagement.post('/checkCard', (req, res) => {
 
 });
 
+gamesManagement.post('/setColorToTopCard', (req, res) => {
+    const bodyObj = JSON.parse(req.body);
+    const currentGame = findCurrGame(bodyObj.gameToCheck);
+    GameLogic.setColorToTopCard(bodyObj.color, currentGame.gameData);
+    res.json(result);
+    //res.sendStatus(200);
+
+});
+
 function findCurrGame(bodyObj) {
     const gameId = bodyObj.gameId;
     return gamesList.find(game => game.id === Number(gameId));
@@ -119,7 +128,7 @@ function createGame(currentGame) {
     currentGame.gameData.deck = GameLogic.createDeck();
     currentGame.gameData.players = GameLogic.shareCardsToPlayers(currentGame.numOfRegisterd, currentGame.gameData);
     currentGame.gameData.cardOnTop = GameLogic.drawOpeningCard(currentGame.gameData);
-    //console.log(currentGame.gameData + "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
+    console.log(currentGame.gameData + "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
 }
 
 

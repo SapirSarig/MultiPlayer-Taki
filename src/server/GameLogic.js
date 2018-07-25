@@ -194,7 +194,9 @@ function shareCardsToPlayers(numOfPlayers, gameData) {
             cards: [],
             score: 0,
             showCards: true,
-            oneCardLeftCounter: 0
+            oneCardLeftCounter: 0,
+            ImDoneIsHidden: true,
+            changeColorWindowIsOpen: false
         });
 
         if (playerIndex !== numOfPlayers - 1) {
@@ -283,7 +285,7 @@ function setTournament() {
 
 function checkCard(card, playerName, gameData) {
     let isPlayerTurn = checkPlayerTurn(playerName, gameData);
-   // console.log("is player turn: " + isPlayerTurn);
+    console.log("is player turn: " + isPlayerTurn);
 
     if (isPlayerTurn) {
         if (gameData.openTaki) {
@@ -292,7 +294,7 @@ function checkCard(card, playerName, gameData) {
                 removeAndSetTopCard(gameData.players[gameData.turnIndex], card, gameData);
             }
             else {
-                //alert("wrong");
+                console.log("open taki - card is not valid");
                 //wrongSound.play();
             }
         }
@@ -301,11 +303,11 @@ function checkCard(card, playerName, gameData) {
                 let cardOnTopColor = gameData.cardOnTop.color;
                 //console.log("gameData.players[turnIndex] = " + gameData.players[gameData.turnIndex]);
                 removeAndSetTopCard(gameData.players[gameData.turnIndex], card, gameData);
-                isSpecialCard(gameData.players[gameData.turnIndex], gameData, cardOnTopColor);
+                isSpecialCard(gameData.players[gameData.turnIndex], gameData, cardOnTopColor, playerName);
             }
             else {
                 if (plus2 > 0) {
-                    //alert(`you have to take ${plus2} cards from deck!`);
+                    alert(`you have to take ${plus2} cards from deck!`);
                 }
                 else {
                     //alert("wrong!");
@@ -318,6 +320,8 @@ function checkCard(card, playerName, gameData) {
         //alert("wrong!");
         //wrongSound.play();
     }
+    // console.log("changeColorWindowIsOpen: " + result.changeColorWindowIsOpen +
+    //     " ImDoneIsHidden:" + result.ImDoneIsHidden);
 }
 
 
@@ -375,12 +379,12 @@ function removeCardFromPlayersArr(player, card) {
     //setStateInBoardCB("players", players, false);
 }
 
-function setColorToTopCard(color, deck) {
-    changeColorSound.play();
-    let newCard = cardOnTop;
+function setColorToTopCard(color, gameData) {
+    //changeColorSound.play();
+    let newCard = gameData.cardOnTop;
     newCard.color = color;
-    newCard.imgSourceFront = `cards/change_colorful_${color}.png`;
-    this.setNewcardOnTop(newCard, deck);
+    newCard.imgSourceFront = `./resources/cards/change_colorful_${color}.png`;
+    setNewcardOnTop(newCard, gameData);
 }
 
 function setNewcardOnTop(cardToPutOnTop, gameData) {
@@ -389,7 +393,7 @@ function setNewcardOnTop(cardToPutOnTop, gameData) {
     //setStateInBoardCB('cardOnTop', cardOnTop);
 }
 
-function isSpecialCard(player, gameData, cardOnTopColor) {
+function isSpecialCard(player, gameData, cardOnTopColor, playerName) {
     if (gameData.cardOnTop.value === "2plus") {
         gameData.plus2 += 2;
         checkPlayerWin(player, 1, gameData);
@@ -397,6 +401,7 @@ function isSpecialCard(player, gameData, cardOnTopColor) {
     else if (gameData.cardOnTop.value === "change_colorful") {
         //setStateInBoardCB('changeColorWindowIsOpen', true, false);
         //this.changeTurn(this.checkTopCard(), numOfPlayers, deck);
+        playerName.changeColorWindowIsOpen = true;
     }
     else if (gameData.cardOnTop.value === "stop") {
         if (player.cards.length === 0) {
@@ -415,6 +420,7 @@ function isSpecialCard(player, gameData, cardOnTopColor) {
         //     //this.checkPlayerWin(player, this.checkTopCard(), numOfPlayers, deck);
         if (!gameData.openTaki) {
             //setStateInBoardCB('ImDoneIsHidden', false, false);
+            playerName.ImDoneIsHidden = false;
             gameData.openTaki = true;
         }
 
@@ -428,7 +434,7 @@ function isSpecialCard(player, gameData, cardOnTopColor) {
     }
     else if (gameData.cardOnTop.value === "plus") {
         console.log("player put plus card! ");
-        changeTurn(gameData.numOfPlayers, gameData);
+        //changeTurn(gameData.numOfPlayers, gameData);
     }
     else {
         checkPlayerWin(player, 1, gameData);
@@ -592,7 +598,7 @@ function checkPlayerWin(player, num, gameData) {
         //setTimeout(() => { this.stopTheGame(deck) }, 1000);
     }
     else {
-        changeTurn(num,gameData);
+        changeTurn(num, gameData);
     }
 }
 
@@ -628,7 +634,7 @@ function drawOpeningCard(gameData) {
 }
 
 function checkStatusOnTableDeckClicked(playerName, gameData) {
-   // console.log("************checkStatusOnTableDeckClicked****************");
+    // console.log("************checkStatusOnTableDeckClicked****************");
     if (!gameData.gameOver) {
         let isPlayerTurn = checkPlayerTurn(playerName, gameData);
         if (isPlayerTurn) {
@@ -636,7 +642,7 @@ function checkStatusOnTableDeckClicked(playerName, gameData) {
                 if (playerHasNo2PlusCards(gameData.players[gameData.turnIndex], gameData.numOfPlayers, gameData.deck)) {
                     let numOfCardsPlayerHasToTake = gameData.plus2;
                     for (let i = 0; i < numOfCardsPlayerHasToTake; i++) {
-                        addCardToPlayersArr(gameData.players[gameData.turnIndex].cards, gameData.deck);
+                        addCardToPlayersArr(gameData.players[gameData.turnIndex].cards, gameData);
                     }
                 }
             }
@@ -676,6 +682,9 @@ function checkPlayerTurn(player, gameData) {
     let res = false;
     if (gameData.turnIndex === playerIndex) {
         res = true;
+    }
+    else {
+        console.log("Not your turn!!!!!!!!!!!!!!!!!!!!!!");
     }
     return res;
 }
@@ -945,4 +954,5 @@ function checkSpacesBetweenCards(resizeArr, index) {
     }
 }
 
-module.exports = { createDeck, shareCardsToPlayers, drawOpeningCard, checkStatusOnTableDeckClicked ,checkCard}
+module.exports = { createDeck, shareCardsToPlayers, drawOpeningCard,
+     checkStatusOnTableDeckClicked, checkCard, setColorToTopCard }

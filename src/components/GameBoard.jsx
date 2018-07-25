@@ -19,7 +19,9 @@ export default class GameBoard extends React.Component {
         }
 
         this.state = {
-            gameData: {}
+            gameData: {},
+            // ImDoneIsHidden: true,
+            // changeColorWindowIsOpen: false
         }
     }
 
@@ -59,9 +61,22 @@ export default class GameBoard extends React.Component {
     checkCard(cardToCheck) {
         const data = {
             gameToCheck: this.gameToCheck,
-            card:cardToCheck
+            card: cardToCheck,
         }
         fetch('/games/checkCard', { method: 'POST', body: JSON.stringify(data), credentials: 'include' });
+        console.log("on game board - I'm done is hidden?: " + this.gameToCheck.userName.ImDoneIsHidden)
+        console.log("on game board - change colorful is open?: " + this.gameToCheck.userName.changeColorWindowIsOpen)
+        
+    }
+
+    colorChangedInWindow(color) {
+        this.setState(() => { return { changeColorWindowIsOpen: false }; });
+        const data = {
+            gameToCheck: this.gameToCheck,
+            color: color
+        }
+        fetch('/games/setColorToTopCard', { method: 'POST', body: JSON.stringify(data), credentials: 'include' })
+
     }
 
     render() {
@@ -71,8 +86,17 @@ export default class GameBoard extends React.Component {
             <div>
                 {gameData && gameData.players && (
                     <div>
+                        {this.props.user.changeColorWindowIsOpen && <div className="colorWindowContainer">
+                            <div className="colorWindow">
+                                <button className="blue" onClick={() => this.colorChangedInWindow("blue")}></button>
+                                <button className="red" onClick={() => this.colorChangedInWindow("red")}></button>
+                                <button className="yellow" onClick={() => this.colorChangedInWindow("yellow")}></button>
+                                <button className="green" onClick={() => this.colorChangedInWindow("green")}></button>
+                            </div>
+                        </div>}
                         <TableDeck cardOnTop={gameData.cardOnTop} checkStatusOnTableDeckClicked={this.checkStatusOnTableDeckClicked} />
                         <div>End of deck</div>
+                        {!this.props.user.ImDoneIsHidden && <button className="ImDoneButton" /*onClick={() => GameLogic.onImDoneButtonClicked(players[numberOfPlayer - 1], numberOfPlayer, deck)}*/>I'm done</button>}
                         {gameData.players[0] && <PlayerComponent user={user} checkCard={this.checkCard} player={gameData.players[0]} numberOfPlayer={gameData.numberOfPlayer} /*cardMarginLeft={cardMarginLeft[1]}*/ />}
                         {gameData.players[1] && <PlayerComponent user={user} checkCard={this.checkCard} player={gameData.players[1]} numberOfPlayer={gameData.numberOfPlayer} /*cardMarginLeft={cardMarginLeft[1]}*/ />}
                         {gameData.players[2] && <PlayerComponent user={user} checkCard={this.checkCard} player={gameData.players[2]} numberOfPlayer={gameData.numberOfPlayer} /*cardMarginLeft={cardMarginLeft[1]}*/ />}
