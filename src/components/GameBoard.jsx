@@ -4,6 +4,7 @@ import { gamesList } from '../server/auth.js';
 import GameRoom from './GameRoom.jsx';
 import PlayerComponent from './PlayerComponent.jsx';
 import TableDeck from './TableDeck.jsx';
+import "../../src/style.css";
 
 export default class GameBoard extends React.Component {
     constructor(props) {
@@ -13,6 +14,8 @@ export default class GameBoard extends React.Component {
         this.createGameData = this.createGameData.bind(this);
         this.checkStatusOnTableDeckClicked = this.checkStatusOnTableDeckClicked.bind(this);
         this.checkCard = this.checkCard.bind(this);
+        this.colorChangedInWindow = this.colorChangedInWindow.bind(this);
+        this.imDoneButtonClicked = this.imDoneButtonClicked.bind(this);
         this.gameToCheck = {
             gameId: props.gameId,
             userName: props.user.name
@@ -72,7 +75,13 @@ export default class GameBoard extends React.Component {
             color: color
         }
         fetch('/games/setColorToTopCard', { method: 'POST', body: JSON.stringify(data), credentials: 'include' })
+        //hello
     }
+
+    imDoneButtonClicked(){
+        fetch('/games/imDoneButtonClicked', { method: 'POST', body: JSON.stringify(this.gameToCheck), credentials: 'include' })
+    }
+    
 
     render() {
         const { gameData } = this.state;
@@ -94,7 +103,7 @@ export default class GameBoard extends React.Component {
                                             <button className="green" onClick={() => this.colorChangedInWindow("green")}></button>
                                         </div>
                                     </div>}
-                                    {(player.name === user.name && !player.ImDoneIsHidden) && <button className="ImDoneButton" /*onClick={() => GameLogic.onImDoneButtonClicked(players[numberOfPlayer - 1], numberOfPlayer, deck)}*/>I'm done</button>}
+                                    {(player.name === user.name && !player.ImDoneIsHidden) && <button className="ImDoneButton" onClick={() => this.imDoneButtonClicked()}>I'm done</button>}
                                     <PlayerComponent user={user} checkCard={this.checkCard} player={player} numberOfPlayer={gameData.numberOfPlayer} /*cardMarginLeft={cardMarginLeft[1]}*/ />
                                 </div>)
                             )

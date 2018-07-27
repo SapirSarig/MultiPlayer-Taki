@@ -285,7 +285,7 @@ function setTournament() {
 
 function checkCard(card, playerName, gameData) {
     let isPlayerTurn = checkPlayerTurn(playerName, gameData);
-    console.log("is player turn: " + isPlayerTurn);
+    //console.log("is player turn: " + isPlayerTurn);
 
     if (isPlayerTurn) {
         if (gameData.openTaki) {
@@ -294,7 +294,7 @@ function checkCard(card, playerName, gameData) {
                 removeAndSetTopCard(gameData.players[gameData.turnIndex], card, gameData);
             }
             else {
-                console.log("open taki - card is not valid");
+                //console.log("open taki - card is not valid");
                 //wrongSound.play();
             }
         }
@@ -307,7 +307,7 @@ function checkCard(card, playerName, gameData) {
             }
             else {
                 if (plus2 > 0) {
-                    alert(`you have to take ${plus2} cards from deck!`);
+                    //alert(`you have to take ${plus2} cards from deck!`);
                 }
                 else {
                     //alert("wrong!");
@@ -436,6 +436,7 @@ function isSpecialCard(player, gameData, cardOnTopColor) {
     }
     else if (gameData.cardOnTop.value === "plus") {
         console.log("player put plus card! ");
+        //add 1 turn to statistics
         //changeTurn(gameData.numOfPlayers, gameData);
     }
     else {
@@ -595,6 +596,7 @@ function playerHasNo2PlusCards(player, numOfPlayers, deck) {
 function checkPlayerWin(player, num, gameData) {
 
     if (player.cards.length === 0) {
+        //todo!!
         //turnIndex === gameData.players[gameData.turnIndex].index ? winnerSound.play() : loserSound.play();
         //alert(gameData.playersName[gameData.turnIndex]+ " wins!")
         //setTimeout(() => { this.stopTheGame(deck) }, 1000);
@@ -613,10 +615,13 @@ function stopTheGame() {
     //alert("game over");
 }
 
-function checkTopCard() {
+function checkTopCard(gameData) {
     var nextTurn = 1;
-    if (cardOnTop.value === "stop" || cardOnTop.value === "plus") {
+    if (gameData.cardOnTop.value === "stop"){
         nextTurn = 2;
+    }
+    if(gameData.cardOnTop.value === "plus") {
+        nextTurn = 0;
     }
     return nextTurn;
 }
@@ -890,23 +895,24 @@ function getColorFromColorsArr(colorsArr) {
     return res;
 }
 
-function colorChangedInWindow(color, deck, player, numOfPlayers) {
-    this.setColorToTopCard(color, deck);
-    setStateInBoardCB('changeColorWindowIsOpen', false, false);
-    // this.setState({
-    //     modalIsOpen: false 
-    // });
-    this.checkPlayerWin(player, 1, numOfPlayers, deck);
-}
+// function colorChangedInWindow(color, deck, player, numOfPlayers) {
+//     this.setColorToTopCard(color, deck);
+//     setStateInBoardCB('changeColorWindowIsOpen', false, false);
+//     // this.setState({
+//     //     modalIsOpen: false 
+//     // });
+//     this.checkPlayerWin(player, 1, numOfPlayers, deck);
+// }
 
 
-function onImDoneButtonClicked(player, numOfPlayers, deck) {
-    openTaki = false;
-    setStateInBoardCB('ImDoneIsHidden', true, false);
-    if (cardOnTop.value === "2plus") {
-        plus2 += 2;
+function imDoneButtonClicked(gameData) {
+    gameData.players[gameData.turnIndex].ImDoneIsHidden = true;
+    gameData.openTaki = false;
+    //setStateInBoardCB('ImDoneIsHidden', true, false);
+    if (gameData.cardOnTop.value === "2plus") {
+        gameData.plus2 += 2;
     }
-    this.checkPlayerWin(player, this.checkTopCard(), numOfPlayers, deck);
+    checkPlayerWin(gameData.players[gameData.turnIndex], checkTopCard(gameData), gameData);
 }
 
 function rotateArrow() {
@@ -957,4 +963,4 @@ function checkSpacesBetweenCards(resizeArr, index) {
 }
 
 module.exports = { createDeck, shareCardsToPlayers, drawOpeningCard,
-     checkStatusOnTableDeckClicked, checkCard, setColorToTopCard }
+     checkStatusOnTableDeckClicked, checkCard, setColorToTopCard, imDoneButtonClicked }

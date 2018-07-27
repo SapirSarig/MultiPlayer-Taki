@@ -88,6 +88,13 @@ gamesManagement.post('/setColorToTopCard', (req, res) => {
 
 });
 
+gamesManagement.post('/imDoneButtonClicked', (req, res) => {
+    const bodyObj = JSON.parse(req.body);
+    const currentGame = findCurrGame(bodyObj);
+    GameLogic.imDoneButtonClicked(currentGame.gameData);
+     res.sendStatus(200);
+});
+
 function findCurrGame(bodyObj) {
     const gameId = bodyObj.gameId;
     return gamesList.find(game => game.id === Number(gameId));
@@ -97,21 +104,8 @@ gamesManagement.post('/checkStatusOnTableDeckClicked', (req, res) => {
     const bodyObj = JSON.parse(req.body);
     const currentGame = findCurrGame(bodyObj);
     const userName = bodyObj.userName;
-
-    // const {gameData} = this.state;
-    // const { user } = this.props;
-
-    // // { players, deck, cardOnTop } = this.state;
     GameLogic.checkStatusOnTableDeckClicked(userName, currentGame.gameData);
-    //console.log(currentGame, '@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@')
-
     res.sendStatus(200);
-
-    // this.setState(() => {
-    //     return {
-    //         deck
-    //     };
-    // });
 });
 
 function createGame(currentGame) {
