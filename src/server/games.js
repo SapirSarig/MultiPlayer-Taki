@@ -30,6 +30,7 @@ gamesManagement.post('/addGame', auth.userAuthentication, (req, res) => {
 
     bodyObj.id = gameId;
     gameId++;
+    console.log('#$@#%#@$%#$%$#%#$%#$%', bodyObj)
     gamesList.push(bodyObj);
     res.sendStatus(201);
 });
@@ -37,7 +38,6 @@ gamesManagement.post('/addGame', auth.userAuthentication, (req, res) => {
 gamesManagement.post('/updateGameData', (req, res) => {
     const bodyObj = JSON.parse(req.body);
     const gameIndex = gamesList.findIndex(game => game.name === bodyObj.name);
-
     //console.log("BEFORE updating " + gamesList[gameIndex].numOfRegisterd)
     gamesList[gameIndex] = bodyObj;
     //console.log("AFTER updating " + gamesList[gameIndex].numOfRegisterd)
@@ -84,8 +84,7 @@ gamesManagement.post('/setColorToTopCard', (req, res) => {
     const bodyObj = JSON.parse(req.body);
     const currentGame = findCurrGame(bodyObj.gameToCheck);
     GameLogic.setColorToTopCard(bodyObj.color, currentGame.gameData);
-    res.json(result);
-    //res.sendStatus(200);
+    res.sendStatus(200);
 
 });
 
@@ -128,7 +127,7 @@ function createGame(currentGame) {
     currentGame.gameData.deck = GameLogic.createDeck();
     currentGame.gameData.players = GameLogic.shareCardsToPlayers(currentGame.numOfRegisterd, currentGame.gameData);
     currentGame.gameData.cardOnTop = GameLogic.drawOpeningCard(currentGame.gameData);
-    console.log(currentGame.gameData + "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
+    console.log(currentGame.gameData, "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
 }
 
 

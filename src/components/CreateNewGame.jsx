@@ -11,7 +11,7 @@ export default class CreateNewGame extends React.Component {
                 name: "",
                 id:0,
                 userName: "",
-                numOfPlayers: 0,
+                numOfPlayers: 2,
                 numOfRegisterd: 0,
                 Active: false,
                 gameData:{
@@ -91,14 +91,15 @@ export default class CreateNewGame extends React.Component {
     }
 
     render() {
+        const {currGame} = this.state;
         return (
             <div className="CreateNewGame-wrapper" >
                 <label className="nameOfGame-label" htmlFor="gamesname"> Game's name: </label>
                 <input className="nameOfGame-input" name="gamesname" onChange={this.handleNameChange} />     <br />
                 <label className="nameOfPlayers-label" htmlFor="nameOfPlayers"> Number of players: </label><br />
-                <input type="radio" name="numOfPlayers-input" value="2" onChange={this.handleNumChange} /> 2<br />
-                <input type="radio" name="numOfPlayers-input" value="3" onChange={this.handleNumChange} /> 3 <br />
-                <input type="radio" name="numOfPlayers-input" value="4" onChange={this.handleNumChange} /> 4 <br />
+                <input type="radio" name="numOfPlayers-input" value="2" onChange={this.handleNumChange} checked={Number(currGame.numOfPlayers) === 2} /> 2<br />
+                <input type="radio" name="numOfPlayers-input" value="3" onChange={this.handleNumChange} checked={Number(currGame.numOfPlayers) === 3} /> 3 <br />
+                <input type="radio" name="numOfPlayers-input" value="4" onChange={this.handleNumChange} checked={Number(currGame.numOfPlayers) === 4} /> 4 <br />
                 <input onClick={this.handleCreateGame} className="submit-btn btn" type="submit" value="Create" />
                 {this.renderErrorMessage()}
             </div>

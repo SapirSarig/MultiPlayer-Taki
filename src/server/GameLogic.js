@@ -1,6 +1,6 @@
 const cardColors = { 0: "blue", 1: "red", 2: "green", 3: "yellow" }
 const numOfColors = 4;
-const numOfCardsForEachPlayer = 1;
+const numOfCardsForEachPlayer = 10;
 let setStateInBoardCB;
 let takenCardsCounter = 0;
 let turnIndex = 2;
@@ -303,7 +303,7 @@ function checkCard(card, playerName, gameData) {
                 let cardOnTopColor = gameData.cardOnTop.color;
                 //console.log("gameData.players[turnIndex] = " + gameData.players[gameData.turnIndex]);
                 removeAndSetTopCard(gameData.players[gameData.turnIndex], card, gameData);
-                isSpecialCard(gameData.players[gameData.turnIndex], gameData, cardOnTopColor, playerName);
+                isSpecialCard(gameData.players[gameData.turnIndex], gameData, cardOnTopColor);
             }
             else {
                 if (plus2 > 0) {
@@ -381,10 +381,12 @@ function removeCardFromPlayersArr(player, card) {
 
 function setColorToTopCard(color, gameData) {
     //changeColorSound.play();
+    gameData.players[gameData.turnIndex].changeColorWindowIsOpen = false;
     let newCard = gameData.cardOnTop;
     newCard.color = color;
     newCard.imgSourceFront = `./resources/cards/change_colorful_${color}.png`;
     setNewcardOnTop(newCard, gameData);
+    changeTurn(1,gameData);
 }
 
 function setNewcardOnTop(cardToPutOnTop, gameData) {
@@ -393,7 +395,7 @@ function setNewcardOnTop(cardToPutOnTop, gameData) {
     //setStateInBoardCB('cardOnTop', cardOnTop);
 }
 
-function isSpecialCard(player, gameData, cardOnTopColor, playerName) {
+function isSpecialCard(player, gameData, cardOnTopColor) {
     if (gameData.cardOnTop.value === "2plus") {
         gameData.plus2 += 2;
         checkPlayerWin(player, 1, gameData);
@@ -401,7 +403,7 @@ function isSpecialCard(player, gameData, cardOnTopColor, playerName) {
     else if (gameData.cardOnTop.value === "change_colorful") {
         //setStateInBoardCB('changeColorWindowIsOpen', true, false);
         //this.changeTurn(this.checkTopCard(), numOfPlayers, deck);
-        playerName.changeColorWindowIsOpen = true;
+        player.changeColorWindowIsOpen = true;
     }
     else if (gameData.cardOnTop.value === "stop") {
         if (player.cards.length === 0) {
@@ -420,7 +422,7 @@ function isSpecialCard(player, gameData, cardOnTopColor, playerName) {
         //     //this.checkPlayerWin(player, this.checkTopCard(), numOfPlayers, deck);
         if (!gameData.openTaki) {
             //setStateInBoardCB('ImDoneIsHidden', false, false);
-            playerName.ImDoneIsHidden = false;
+            player.ImDoneIsHidden = false;
             gameData.openTaki = true;
         }
 

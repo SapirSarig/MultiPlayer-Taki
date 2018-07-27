@@ -8,8 +8,8 @@ class PlayerComponent extends Component {
 
     render() {
         const { user, player, checkCard } = this.props;
-        let {cardMarginLeft} = this.props;
-
+        let { cardMarginLeft } = this.props;
+        //fsdfsra
         return (
             <div className={"player" + player.name} >
                 <div>{player.name}</div>

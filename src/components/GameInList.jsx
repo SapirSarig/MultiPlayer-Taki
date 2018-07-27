@@ -14,12 +14,12 @@ export default class GameInList extends React.Component {
     }
 
     updateCurrGame(gameToUpdate) {
-        //console.log("****updateSingleGame****")
+        console.log("****updateSingleGame****")
         gameToUpdate.numOfRegisterd++;
         gameToUpdate.gameData.playersName.push(this.props.userName);
         this.setState({userJoined:true});
         this.props.updateUserInGame(true,gameToUpdate);
-        if (gameToUpdate.numOfRegisterd.toString() === gameToUpdate.numOfPlayers) {
+        if (Number(gameToUpdate.numOfRegisterd) === Number(gameToUpdate.numOfPlayers)) {
             gameToUpdate.Active = true;
         }
         fetch('/games/updateGameData', { method: 'POST', body: JSON.stringify(gameToUpdate), credentials: 'include' });
