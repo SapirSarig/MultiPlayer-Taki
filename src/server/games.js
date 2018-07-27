@@ -23,7 +23,11 @@ gamesManagement.post('/addGame', auth.userAuthentication, (req, res) => {
     const bodyObj = JSON.parse(req.body);
     const currentGame = gamesList.find(game => game.name === bodyObj.name);
 
-    if (currentGame) {
+    if (!bodyObj.name) {
+        res.status(401).send('game name empty');
+        return;
+    }
+    else if (currentGame) {
         res.status(403).send('game name already exists');
         return;
     }
@@ -92,7 +96,7 @@ gamesManagement.post('/imDoneButtonClicked', (req, res) => {
     const bodyObj = JSON.parse(req.body);
     const currentGame = findCurrGame(bodyObj);
     GameLogic.imDoneButtonClicked(currentGame.gameData);
-     res.sendStatus(200);
+    res.sendStatus(200);
 });
 
 function findCurrGame(bodyObj) {

@@ -46,9 +46,6 @@ export default class GameRoom extends React.Component {
         const { currGame } = this.state;
         let isGameActive = currGame.Active;
 
-        //console.log("isGameActive? " + isGameActive);
-        //console.log("user= " + user);
-
         return (
             <div>
                 {!isGameActive ?

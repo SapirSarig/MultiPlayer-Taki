@@ -148,11 +148,6 @@
     text-align: center;
   }
 
-  .card {
-    height: 180px;
-    width: 120px;
-    margin: 0 auto;
-    display: inline-block;
-    transition: all .3s ease-in-out;  
-    position: relative;
+  .playerCardsContainer, .tableDeckCardsContainer{
+      display: flex;
   }

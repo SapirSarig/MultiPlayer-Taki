@@ -41,6 +41,9 @@ export default class GameInList extends React.Component {
             <div className="gameInfo">
                 <div className={"game_" + currGame.id} style={activeGameStyle}>
                     <div>
+                        Game's Owner: {currGame.userName}
+                    </div>
+                    <div>
                         Game's Name: {currGame.name}
                     </div>
                     <div>

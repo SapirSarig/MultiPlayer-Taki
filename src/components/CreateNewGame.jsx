@@ -9,14 +9,14 @@ export default class CreateNewGame extends React.Component {
         this.state = {
             currGame: {
                 name: "",
-                id:0,
+                id: 0,
                 userName: "",
                 numOfPlayers: 2,
                 numOfRegisterd: 0,
                 Active: false,
-                gameData:{
-                    playersName:[]
-                }                
+                gameData: {
+                    playersName: []
+                }
             },
 
             errMessage: ""
@@ -44,8 +44,10 @@ export default class CreateNewGame extends React.Component {
                         this.setState(() => ({ errMessage: "" }));
                         changeHiddenProperty();
                     } else {
-                        if (response.status === 403) {
-                            //console.log("game is already exist!!!!")
+                        if (response.status === 401) {
+                            this.setState(() => ({ errMessage: "Game name empty" }));
+                        }
+                        else if (response.status === 403) {
                             this.setState(() => ({ errMessage: "Game name already exists, please try another one" }));
                         }
                     }
@@ -78,7 +80,7 @@ export default class CreateNewGame extends React.Component {
             });
     }
 
-    
+
     renderErrorMessage() {
         if (this.state.errMessage) {
             return (
@@ -91,11 +93,11 @@ export default class CreateNewGame extends React.Component {
     }
 
     render() {
-        const {currGame} = this.state;
+        const { currGame } = this.state;
         return (
             <div className="CreateNewGame-wrapper" >
                 <label className="nameOfGame-label" htmlFor="gamesname"> Game's name: </label>
-                <input className="nameOfGame-input" name="gamesname" onChange={this.handleNameChange} />     <br />
+                <input ref={input => input && input.focus()} className="nameOfGame-input" name="gamesname" onChange={this.handleNameChange} />     <br />
                 <label className="nameOfPlayers-label" htmlFor="nameOfPlayers"> Number of players: </label><br />
                 <input type="radio" name="numOfPlayers-input" value="2" onChange={this.handleNumChange} checked={Number(currGame.numOfPlayers) === 2} /> 2<br />
                 <input type="radio" name="numOfPlayers-input" value="3" onChange={this.handleNumChange} checked={Number(currGame.numOfPlayers) === 3} /> 3 <br />

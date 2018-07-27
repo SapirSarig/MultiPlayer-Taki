@@ -47,8 +47,11 @@ export default class LoginModal extends React.Component {
                 this.setState(()=> ({errMessage: ""}));
                 this.props.loginSuccessHandler();
             } else {
-                if (response.status === 403) {
-                    this.setState(()=> ({errMessage: "User name already exists, please try another one"}));
+                if (response.status === 401) {
+                    this.setState(()=> ({errMessage: "User name empty."}));
+                }
+                else if (response.status === 403) {
+                    this.setState(()=> ({errMessage: "User name already exists, please try another one."}));
                 }
                 this.props.loginErrorHandler();
             }
