@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import baseContainer from './baseContainer.jsx'
+import "../../src/style.css";
 
 export default class CreateNewGame extends React.Component {
     constructor(props) {

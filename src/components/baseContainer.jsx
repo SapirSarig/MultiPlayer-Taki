@@ -4,6 +4,7 @@ import LoginModal from './login-modal.jsx';
 import ChatContaier from './chatContainer.jsx';
 import Lobby from './Lobby.jsx'
 import GameRoom from './GameRoom.jsx';
+import "../../src/style.css";
 
 export default class BaseContainer extends React.Component {
     constructor(props) {

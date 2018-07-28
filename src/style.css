@@ -170,3 +170,11 @@
   .playerCardsContainer, .tableDeckCardsContainer{
       display: flex;
   }
+
+  body {
+      background-color: green;
+  }
+
+  .text, .user-info-area, .username-label, .userList, .CreateNewGame-wrapper, .WaitingScreen {
+      color:white;
+  }

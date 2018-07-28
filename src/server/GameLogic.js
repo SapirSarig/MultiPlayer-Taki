@@ -6,7 +6,6 @@ let takenCardsCounter = 0;
 let turnIndex = 2;
 let openTaki = false;
 let gameOver = false;
-let numOfTurns = 0;
 let cardOnTop = null;
 let players = [];
 let gameStarted = false;
@@ -30,7 +29,11 @@ let sec = 0;
 let min = 0;
 let stopTimer = false;
 let timeInterval;
-let prevIndex = 1;
+
+
+//let prevIndex = 1;
+
+//sounds
 let takingCard;
 let wrongSound;
 let changeColorSound;
@@ -468,7 +471,7 @@ function newTimeOut(player, deck, numOfPlayers, arrOfSameCards, takiTime) {
 
 
 
-function gameTimer() {
+function gameTimer(gameData) {
     let handler = function () {
         if (!stopTimer) {
             if (++sec === 60) {
@@ -507,7 +510,7 @@ function findAvgOfTurnTime(arr, isAllGames) {
 }
 
 function changeTurn(number, gameData) {
-    console.log("************ change TURN **************");
+    console.log("**** change TURN ******");
     console.log("turnIndex before changing turn" + gameData.turnIndex);
     //console.log("numofplayers " + gameData.numOfPlayers);
     gameData.turnIndex = (gameData.turnIndex + number) % gameData.numOfPlayers;
@@ -515,12 +518,12 @@ function changeTurn(number, gameData) {
         gameData.turnIndex = (gameData.turnIndex + 1) % gameData.numOfPlayers;
     }
     console.log("turnIndex after changing turn" + gameData.turnIndex);
-
+    gameData.numOfTurns++;
 }
 
 
 // function changeTurn(number, numOfPlayers, gameData) {
-//     console.log("************ change TURN **************")
+//     console.log("**** change TURN ******")
 //     endTime = fullTime;
 //     if (gameData.openTaki) {
 //         rivalPlay(gameData.deck, numOfPlayers);
@@ -594,9 +597,9 @@ function playerHasNo2PlusCards(player, numOfPlayers, deck) {
 }
 
 function checkPlayerWin(player, num, gameData) {
-    console.log("*****checkPlayerWin*****")
+    console.log("**checkPlayerWin**")
     if (player.cards.length === 0) {
-        console.log("*****no cards left for player: " + player.index);
+        console.log("***no cards left for player: " + player.index);
         player.noCardsLeft = true;
         gameData.playersWithCards--;
         console.log("gameData.playersWithCards = " + gameData.playersWithCards);
@@ -653,7 +656,7 @@ function drawOpeningCard(gameData) {
 }
 
 function checkStatusOnTableDeckClicked(playerName, gameData) {
-    // console.log("************checkStatusOnTableDeckClicked****************");
+    // console.log("*****checkStatusOnTableDeckClicked*****");
     if (!gameData.gameOver) {
         let isPlayerTurn = checkPlayerTurn(playerName, gameData);
         if (isPlayerTurn) {

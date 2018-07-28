@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { gamesList } from '../server/auth.js';
 import GameRoom from './GameRoom.jsx';
+import "../../src/style.css";
 
 export default class GameInList extends React.Component {
     constructor(props) {
@@ -37,26 +38,26 @@ export default class GameInList extends React.Component {
     render() {
         const { currGame, userName,updateUserInGame} = this.props;
         const {userJoined} = this.state;
-        let activeGameStyle = currGame.Active ? { border: 'solid green' } : { border: 'solid red' }
+        let activeGameStyle = currGame.Active ? { border: 'solid blue' } : { border: 'solid red' }
         let userCanRemove = currGame.userName === userName;
         let noOneRegisterd = currGame.numOfRegisterd === 0;
 
         return (
             <div className="gameInfo">
                 <div className={"game_" + currGame.id} style={activeGameStyle}>
-                    <div>
+                    <div className ="text">
                         Game's Owner: {currGame.userName}
                     </div>
-                    <div>
+                    <div className ="text">
                         Game's Name: {currGame.name}
                     </div>
-                    <div>
+                    <div className ="text">
                         Number Of Players: {currGame.numOfPlayers}
                     </div>
-                    <div>
+                    <div className ="text">
                         Number Of Registerd: {currGame.numOfRegisterd}
                     </div>
-                    <div>
+                    <div className ="text">
                         Game's Status: {currGame.Active ? "Game Started" : "Game didn't start"}
                     </div>
                     <button className="joinGameBtn" hidden={currGame.Active} onClick={() => this.updateCurrGame(currGame)}>Join Game</button>

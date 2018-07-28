@@ -13,6 +13,14 @@ class Statistics extends Component {
         return (
             <div className="Statistics">
                 Statistics
+                <div>Card in deck: {gameData.deck.length - gameData.takenCardsCounter} </div>
+                <div>Number of turns: {gameData.numOfTurns} </div>
+                
+                {gameData.players.map((player, index) => {
+                    <div> {player.name} had one card {player.oneCardLeftCounter} </div>
+                })}
+
+                
                 {/* <div className="leftData">
                     <div>Time: {timer}</div>
                     <div>Cards in deck: {numOfCardsInDeck} </div>

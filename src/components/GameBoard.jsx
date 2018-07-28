@@ -107,7 +107,6 @@ export default class GameBoard extends React.Component {
                         {gameData && gameData.players && (
                             <div>
                                 <TableDeck cardOnTop={gameData.cardOnTop} checkStatusOnTableDeckClicked={this.checkStatusOnTableDeckClicked} />
-                                <div>End of deck</div>
                                 <button className="btn" onClick={() => this.showStatistics(true)}>Show Statistics </button>
 
                                 {gameData.players.map((player, index) => (

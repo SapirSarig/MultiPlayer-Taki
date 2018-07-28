@@ -105,12 +105,12 @@ function findCurrGame(bodyObj) {
 }
 
 
-gamesManagement.post('/updatePlayerWatcher', (req,res) =>{
+gamesManagement.post('/updatePlayerWatcher', (req, res) => {
     console.log("==========updatePlayerWatcher=========")
     const bodyObj = JSON.parse(req.body);
     const userName = bodyObj.userName;
     const gameIndex = gamesList.findIndex(game => game.id === Number(bodyObj.gameId));
-    const playerIndex = gamesList[gameIndex].gameData.players.findIndex(player =>player.name === userName )
+    const playerIndex = gamesList[gameIndex].gameData.players.findIndex(player => player.name === userName)
     console.log("gamesList[gameIndex].gameData.playersName[playerIndex].watcher = " + gamesList[gameIndex].gameData.playersName[playerIndex].watcher)
     gamesList[gameIndex].gameData.players[playerIndex].watcher = true;
     console.log("gamesList[gameIndex].gameData.playersName[playerIndex].watcher = " + gamesList[gameIndex].gameData.playersName[playerIndex].watcher)
@@ -127,14 +127,13 @@ gamesManagement.post('/checkStatusOnTableDeckClicked', (req, res) => {
     res.sendStatus(200);
 });
 
-gamesManagement.post('/updateActivePlayers', (req,res)=>{
+gamesManagement.post('/updateActivePlayers', (req, res) => {
     const bodyObj = JSON.parse(req.body);
     const gameIndex = gamesList.findIndex(game => game.id === Number(bodyObj.gameId));
     gamesList[gameIndex].gameData.numOfActivePlayers--;
-    if(gamesList[gameIndex].gameData.numOfActivePlayers===0)
-    {
+    if (gamesList[gameIndex].gameData.numOfActivePlayers === 0) {
         gamesList[gameIndex].Active = false;
-        gamesList[gameIndex].gameData = { playersName:[],numOfActivePlayers:0 };
+        gamesList[gameIndex].gameData = { playersName: [], numOfActivePlayers: 0 };
         gamesList[gameIndex].numOfRegisterd = 0;
     }
     res.sendStatus(200);
@@ -155,6 +154,16 @@ function createGame(currentGame) {
     currentGame.gameData.deck = GameLogic.createDeck();
     currentGame.gameData.players = GameLogic.shareCardsToPlayers(currentGame.numOfRegisterd, currentGame.gameData);
     currentGame.gameData.cardOnTop = GameLogic.drawOpeningCard(currentGame.gameData);
+    currentGame.gameData.gameStat = {
+        turnTime: [],
+        fullTime: "",
+        startTime: "00:01",
+        endTime,
+        sec : 0,
+        min: 0,
+        stopTimer: false,
+        timeInterval
+    }
     console.log(currentGame.gameData, "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
 }
 
