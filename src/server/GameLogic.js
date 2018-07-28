@@ -28,7 +28,6 @@ let endTime;
 let sec = 0;
 let min = 0;
 let stopTimer = false;
-let timeInterval;
 
 
 //let prevIndex = 1;
@@ -41,32 +40,32 @@ let winnerSound;
 let loserSound;
 let shuffleSound;
 
-function newGame() {
-    prevIndex = 1;
-    players = [];
-    turnIndex = 2;
-    takenCardsCounter = 0;
-    gameOver = false;
-    gameMove = [];
-    numOfTurns = 0;
-    turnTime = [];
-    cardOnTop = null;
-    openTaki = false;
-    plus2 = 0;
-    gameStarted = false;
-    transformArrow = 0;
-    fullTime = "";
-    startTime = "00:01";
-    endTime;
-    sec = 0;
-    min = 0;
-    stopTimer = false;
-    clearInterval(timeInterval);
-    this.setSounds();
-    gameNum = 1;
-    is3Games = false;
+// function newGame() {
+//     prevIndex = 1;
+//     players = [];
+//     turnIndex = 2;
+//     takenCardsCounter = 0;
+//     gameOver = false;
+//     gameMove = [];
+//     numOfTurns = 0;
+//     turnTime = [];
+//     cardOnTop = null;
+//     openTaki = false;
+//     plus2 = 0;
+//     gameStarted = false;
+//     transformArrow = 0;
+//     fullTime = "";
+//     startTime = "00:01";
+//     endTime;
+//     sec = 0;
+//     min = 0;
+//     stopTimer = false;
+//     clearInterval(timeInterval);
+//     this.setSounds();
+//     gameNum = 1;
+//     is3Games = false;
 
-}
+// }
 
 function setSounds() {
     wrongSound = new Audio();
@@ -201,7 +200,9 @@ function shareCardsToPlayers(numOfPlayers, gameData) {
             ImDoneIsHidden: true,
             changeColorWindowIsOpen: false,
             noCardsLeft: false,
-            watcher: false
+            watcher: false,
+            turnTime: [],
+            avg: 0
         });
 
         if (playerIndex !== numOfPlayers - 1) {
@@ -391,7 +392,7 @@ function setColorToTopCard(color, gameData) {
     newCard.color = color;
     newCard.imgSourceFront = `./resources/cards/change_colorful_${color}.png`;
     setNewcardOnTop(newCard, gameData);
-    checkPlayerWin(gameData.players[gameData.turnIndex],1,gameData);
+    checkPlayerWin(gameData.players[gameData.turnIndex], 1, gameData);
 }
 
 function setNewcardOnTop(cardToPutOnTop, gameData) {
@@ -469,54 +470,49 @@ function newTimeOut(player, deck, numOfPlayers, arrOfSameCards, takiTime) {
     }
 }
 
-
-
 function gameTimer(gameData) {
-    let handler = function () {
-        if (!stopTimer) {
-            if (++sec === 60) {
-                sec = 0;
-                ++min;
-            }
-            fullTime = (min < 10 ? "0" + min : min) + ":" + (sec < 10 ? "0" + sec : sec);
-            setStateInBoardCB("timer", fullTime, fullTime === "00:02");
-        }
-        else {
-            clearInterval(timeInterval);
-        }
-    };
-
-    timeInterval = setInterval(handler, 1000);
-    handler();
+    console.log("ENTER GAMETIMER!!!");
+    gameData.gameStat.timeInterval = setInterval(function () { timeHandler(gameData.gameStat) }, 1000);
 }
 
-function findAvgOfTurnTime(arr, isAllGames) {
-    let sum = 0;
-    if (arr.length !== 0) {
-        for (let i = 0; i < arr.length; i++) {
-            sum += arr[i];
+function timeHandler(gameStat) {
+    console.log(gameStat.fullTime);
+    if (!gameStat.stopTimer) {
+        if (++gameStat.sec === 60) {
+            gameStat.sec = 0;
+            ++gameStat.min;
         }
-        let avgNum = Number(sum / arr.length);
-        avg = Number(avgNum.toFixed(2));
+        gameStat.fullTime = (gameStat.min < 10 ? "0" + gameStat.min : gameStat.min) + ":" + (gameStat.sec < 10 ? "0" + gameStat.sec : gameStat.sec);
     }
     else {
-        avg = 0;
+        clearInterval(gameStat.timeInterval);
     }
-    if (isAllGames) {
-        avgPerGame = avg;
-        setStateInBoardCB("avgTimeForTurnPerGame", avg, false);
+}
+// //setInterval(handler, 1000);
+// gameData.gameStat.timeInterval = setInterval(handler, 1000);
+// handler(gameData.gameStat);
+
+
+function findAvgOfTurnTime(gameData) {
+    let sum = 0;
+    for (let i = 0; i < gameData.players[gameData.turnIndex].turnTime.length; i++) {
+        sum += gameData.players[gameData.turnIndex].turnTime[i];
     }
-    setStateInBoardCB("avgTimeForTurn", avg, false);
+    let avgNum = Number(sum / gameData.players[gameData.turnIndex].turnTime.length);
+    gameData.players[gameData.turnIndex].avg = Number(avgNum.toFixed(2));
 }
 
 function changeTurn(number, gameData) {
     console.log("**** change TURN ******");
     console.log("turnIndex before changing turn" + gameData.turnIndex);
     //console.log("numofplayers " + gameData.numOfPlayers);
+    gameData.gameStat.endTime = gameData.gameStat.fullTime;
+    setTurnTime(gameData);
     gameData.turnIndex = (gameData.turnIndex + number) % gameData.numOfPlayers;
     while (gameData.players[gameData.turnIndex].noCardsLeft === true) {
         gameData.turnIndex = (gameData.turnIndex + 1) % gameData.numOfPlayers;
     }
+    gameData.gameStat.startTime = gameData.gameStat.fullTime;
     console.log("turnIndex after changing turn" + gameData.turnIndex);
     gameData.numOfTurns++;
 }
@@ -568,23 +564,22 @@ function changeTurn(number, gameData) {
 // }
 
 
-function setTurnTime(endTime) {
-    if (turnIndex === players[1].index) {
-        let start = startTime.split(":");
-        let startMin = Number(start[0]);
-        startMin = startMin * 60;
-        let startSec = Number(start[1]);
-        let fullStartTimeInSec = startMin + startSec;
+function setTurnTime(gameData) {
+    //if (turnIndex === players[1].index) {
+    let start = gameData.gameStat.startTime.split(":");
+    let startMin = Number(start[0]);
+    startMin = startMin * 60;
+    let startSec = Number(start[1]);
+    let fullStartTimeInSec = startMin + startSec;
 
-        let end = endTime.split(":");
-        let endMin = Number(end[0]);
-        endMin = endMin * 60;
-        let endSec = Number(end[1]);
-        let fullendTimeInSec = endMin + endSec;
-
-        turnTime.push(fullendTimeInSec - fullStartTimeInSec);
-        this.findAvgOfTurnTime(turnTime, false);
-    }
+    let end = gameData.gameStat.endTime.split(":");
+    let endMin = Number(end[0]);
+    endMin = endMin * 60;
+    let endSec = Number(end[1]);
+    let fullendTimeInSec = endMin + endSec;
+    gameData.players[gameData.turnIndex].turnTime.push(fullendTimeInSec - fullStartTimeInSec);
+    findAvgOfTurnTime(gameData);
+    //}
 }
 
 
@@ -608,8 +603,8 @@ function checkPlayerWin(player, num, gameData) {
             console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@ ---- GAME --- OVER ----@@@@@@@@@@@@@@@@@@@@@@")
             stopTheGame();
         }
-        else{
-        changeTurn(1, gameData);
+        else {
+            changeTurn(1, gameData);
         }
         //todo!!
         //turnIndex === gameData.players[gameData.turnIndex].index ? winnerSound.play() : loserSound.play();
@@ -650,6 +645,7 @@ function drawOpeningCard(gameData) {
     addTakenCardCounter(gameData);
     gameData.cardOnTop = gameData.deck[CardIndex];
     gameData.gameStarted = true;
+
     //this.printPlayersCards();
     //setStateInBoardCB('cardOnTop',cardOnTop);
     return gameData.deck[CardIndex];
@@ -979,5 +975,5 @@ function checkSpacesBetweenCards(resizeArr, index) {
 
 module.exports = {
     createDeck, shareCardsToPlayers, drawOpeningCard,
-    checkStatusOnTableDeckClicked, checkCard, setColorToTopCard, imDoneButtonClicked
+    checkStatusOnTableDeckClicked, checkCard, setColorToTopCard, imDoneButtonClicked, gameTimer
 }

@@ -21,12 +21,13 @@ export default class GameInList extends React.Component {
         this.setState({userJoined:true});
         this.props.updateUserInGame(true,gameToUpdate);
         if (Number(gameToUpdate.numOfRegisterd) === Number(gameToUpdate.numOfPlayers)) {
+            console.log("active GAme now! ")
             gameToUpdate.Active = true;
         }
         fetch('/games/updateGameData', { method: 'POST', body: JSON.stringify(gameToUpdate), credentials: 'include' });
         if(gameToUpdate.Active)
         {
-            fetch(`/games/createGame/?id=${this.props.currGame.id}`, { method: 'GET', credentials: 'include' })
+            fetch(`/games/createGame/?id=${this.props.currGame.id}`, { method: 'GET', credentials: 'include' });
         }
     }
 
@@ -67,3 +68,4 @@ export default class GameInList extends React.Component {
         );
     }
 }
+//

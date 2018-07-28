@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const auth = require('./auth');
-
 const GameLogic = require('./GameLogic.js');
 
 
@@ -127,6 +126,18 @@ gamesManagement.post('/checkStatusOnTableDeckClicked', (req, res) => {
     res.sendStatus(200);
 });
 
+
+// gamesManagement.get('/startGameTimer', (req, res) => {
+//     console.log("-----------------------startGameTimer------------------------")
+//     const id = req.query.id;
+//     console.log("id = "+ id);
+//     const gameIndex = gamesList.findIndex(game => game.id === Number(id));
+//     console.log("gameIndex = "+ gameIndex);
+//     console.log("gamesList[gameIndex].gameData = "+ JSON.stringify(gamesList[gameIndex].gameData));
+//     GameLogic.gameTimer(gamesList[gameIndex].gameData);
+//     res.sendStatus(200);
+// });
+
 gamesManagement.post('/updateActivePlayers', (req, res) => {
     const bodyObj = JSON.parse(req.body);
     const gameIndex = gamesList.findIndex(game => game.id === Number(bodyObj.gameId));
@@ -154,17 +165,8 @@ function createGame(currentGame) {
     currentGame.gameData.deck = GameLogic.createDeck();
     currentGame.gameData.players = GameLogic.shareCardsToPlayers(currentGame.numOfRegisterd, currentGame.gameData);
     currentGame.gameData.cardOnTop = GameLogic.drawOpeningCard(currentGame.gameData);
-    currentGame.gameData.gameStat = {
-        turnTime: [],
-        fullTime: "",
-        startTime: "00:01",
-        endTime,
-        sec : 0,
-        min: 0,
-        stopTimer: false,
-        timeInterval
-    }
-    console.log(currentGame.gameData, "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
+    //console.log("gameTIMErss")
+    //GameLogic.gameTimer(currentGame.gameData);
 }
 
 module.exports = gamesManagement;

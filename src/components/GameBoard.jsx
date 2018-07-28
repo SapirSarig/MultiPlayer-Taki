@@ -12,7 +12,6 @@ export default class GameBoard extends React.Component {
         super(props);
 
         this.getCurrGameData = this.getCurrGameData.bind(this);
-        //this.createGameData = this.createGameData.bind(this);
         this.checkStatusOnTableDeckClicked = this.checkStatusOnTableDeckClicked.bind(this);
         this.checkCard = this.checkCard.bind(this);
         this.colorChangedInWindow = this.colorChangedInWindow.bind(this);
@@ -24,7 +23,6 @@ export default class GameBoard extends React.Component {
             gameId: props.gameId,
             userName: props.user.name
         }
-        //fdhgd
 
         this.state = {
             gameData: {},
@@ -33,14 +31,8 @@ export default class GameBoard extends React.Component {
     }
 
     componentDidMount() {
-        //this.createGameData().then(() =>
         this.getCurrGameData();
-        //.catch(() => alert("ERROR"));
     }
-
-    // createGameData() {
-    //     return fetch(`/games/createGame/?id=${this.props.gameId}`, { method: 'GET', credentials: 'include' })
-    // }
 
     getCurrGameData() {
         const { gameId } = this.props;

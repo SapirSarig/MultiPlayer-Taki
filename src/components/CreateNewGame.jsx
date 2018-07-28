@@ -17,12 +17,20 @@ export default class CreateNewGame extends React.Component {
                 Active: false,
                 gameData: {
                     playersName: [],
-                    numOfActivePlayers:0
+                    numOfActivePlayers:0,
+                    gameStat:
+                    {
+                        fullTime: "",
+                        startTime: "00:01",
+                        endTime: 0,
+                        sec: 0,
+                        min: 0,
+                        stopTimer: false,
+                        timeInterval: 0
+                    }
                 }
             },
-
             errMessage: ""
-
         }
         this.handleCreateGame = this.handleCreateGame.bind(this);
         this.handleNameChange = this.handleNameChange.bind(this);
@@ -55,9 +63,7 @@ export default class CreateNewGame extends React.Component {
                     }
                 });
         });
-
         return false;
-
     }
 
     handleNameChange(event) {
