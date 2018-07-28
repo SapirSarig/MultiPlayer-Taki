@@ -11,7 +11,7 @@ export default class GameBoard extends React.Component {
         super(props);
 
         this.getCurrGameData = this.getCurrGameData.bind(this);
-        this.createGameData = this.createGameData.bind(this);
+        //this.createGameData = this.createGameData.bind(this);
         this.checkStatusOnTableDeckClicked = this.checkStatusOnTableDeckClicked.bind(this);
         this.checkCard = this.checkCard.bind(this);
         this.colorChangedInWindow = this.colorChangedInWindow.bind(this);
@@ -30,12 +30,14 @@ export default class GameBoard extends React.Component {
     }
 
     componentDidMount() {
-        this.createGameData().then(() => this.getCurrGameData()).catch(() => alert("ERROR"));
+        //this.createGameData().then(() =>
+        this.getCurrGameData();
+        //.catch(() => alert("ERROR"));
     }
 
-    createGameData() {
-        return fetch(`/games/createGame/?id=${this.props.gameId}`, { method: 'GET', credentials: 'include' })
-    }
+    // createGameData() {
+    //     return fetch(`/games/createGame/?id=${this.props.gameId}`, { method: 'GET', credentials: 'include' })
+    // }
 
     getCurrGameData() {
         const { gameId } = this.props;
@@ -98,7 +100,7 @@ export default class GameBoard extends React.Component {
                                     </div>
                                 </div>}
                                 {(player.name === user.name && !player.ImDoneIsHidden) && <button className="ImDoneButton" onClick={() => this.imDoneButtonClicked()}>I'm done</button>}
-                                <PlayerComponent user={user} checkCard={this.checkCard} player={player} numberOfPlayer={gameData.numberOfPlayer} /*cardMarginLeft={cardMarginLeft[1]}*/ />
+                                <PlayerComponent hidden={player.noCardsLeft} user={user} checkCard={this.checkCard} player={player} numberOfPlayer={gameData.numberOfPlayer} gameData ={gameData} /*cardMarginLeft={cardMarginLeft[1]}*/ />
                             </div>)
                         )
                         )}

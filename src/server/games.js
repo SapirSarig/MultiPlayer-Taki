@@ -114,6 +114,7 @@ gamesManagement.post('/checkStatusOnTableDeckClicked', (req, res) => {
 
 function createGame(currentGame) {
     currentGame.gameData.takenCardsCounter = 0;
+    currentGame.gameData.playersWithCards = currentGame.numOfPlayers;
     currentGame.gameData.numOfPlayers = currentGame.numOfPlayers;
     currentGame.gameData.numOfTurns = 0
     currentGame.gameData.turnIndex = 0;
@@ -127,7 +128,5 @@ function createGame(currentGame) {
     currentGame.gameData.cardOnTop = GameLogic.drawOpeningCard(currentGame.gameData);
     console.log(currentGame.gameData, "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
 }
-
-
 
 module.exports = gamesManagement;

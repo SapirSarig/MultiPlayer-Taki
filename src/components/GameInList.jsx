@@ -23,10 +23,14 @@ export default class GameInList extends React.Component {
             gameToUpdate.Active = true;
         }
         fetch('/games/updateGameData', { method: 'POST', body: JSON.stringify(gameToUpdate), credentials: 'include' });
+        if(gameToUpdate.Active)
+        {
+            fetch(`/games/createGame/?id=${this.props.currGame.id}`, { method: 'GET', credentials: 'include' })
+        }
     }
 
     removeCurrGame(gameToRemove) {
-        //console.log("****removeing current game*******")
+        console.log("****removeing current game*******")
         fetch('/games/removeGame', { method: 'POST', body: JSON.stringify(gameToRemove), credentials: 'include' });
     }
 
