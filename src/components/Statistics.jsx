@@ -25,18 +25,6 @@ class Statistics extends Component {
                             <div> {player.name} avg of turns time: {player.avg} </div>
                         </div>
                     )))}
-
-                {/* <div className="leftData">
-                    <div>Time: {timer}</div>
-                    <div>Cards in deck: {numOfCardsInDeck} </div>
-                    <div>Number of turns: {numOfTurns}</div>
-                </div>
-                <div className="rightData">
-                    <div>Avg of turns time: {avgTimeForTurn}</div>
-                    <div>Avg of turns time in all games: {avgTimeForTurnPerGame}</div>
-                    <div>ffPlayer {players[0].index} had one card {players[0].oneCardLeftCounter} times </div>
-                    <div>Player {players[1].index} had one card {players[1].oneCardLeftCounter} times </div>
-                </div> */}
                 {!gameData.gameOver ? <button className="btn" onClick={() => showStatistics(false)}>Hide Statistics</button> :
                     <button className="btn" onClick={() => quitTheGame(false)}>Back To Lobby</button>}
 
