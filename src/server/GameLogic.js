@@ -197,7 +197,8 @@ function shareCardsToPlayers(numOfPlayers, gameData) {
             oneCardLeftCounter: 0,
             ImDoneIsHidden: true,
             changeColorWindowIsOpen: false,
-            noCardsLeft: false
+            noCardsLeft: false,
+            watcher: false
         });
 
         if (playerIndex !== numOfPlayers - 1) {
@@ -510,7 +511,7 @@ function changeTurn(number, gameData) {
     console.log("turnIndex before changing turn" + gameData.turnIndex);
     //console.log("numofplayers " + gameData.numOfPlayers);
     gameData.turnIndex = (gameData.turnIndex + number) % gameData.numOfPlayers;
-    while (gameData.players[gameData.turnIndex].noCardsLeft === 0) {
+    while (gameData.players[gameData.turnIndex].noCardsLeft === true) {
         gameData.turnIndex = (gameData.turnIndex + 1) % gameData.numOfPlayers;
     }
     console.log("turnIndex after changing turn" + gameData.turnIndex);

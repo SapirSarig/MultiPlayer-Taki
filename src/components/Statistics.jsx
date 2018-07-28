@@ -9,9 +9,11 @@ class Statistics extends Component {
 
     render() {
         let { numOfTurns, players, timer, avgTimeForTurn, avgTimeForTurnPerGame, numOfCardsInDeck } = this.props;
+        const {showStatistics, gameData, updateUserInGame} = this.props;
         return (
             <div className="Statistics">
-                <div className="leftData">
+                Statistics
+                {/* <div className="leftData">
                     <div>Time: {timer}</div>
                     <div>Cards in deck: {numOfCardsInDeck} </div>
                     <div>Number of turns: {numOfTurns}</div>
@@ -21,7 +23,10 @@ class Statistics extends Component {
                     <div>Avg of turns time in all games: {avgTimeForTurnPerGame}</div>
                     <div>Player {players[0].index} had one card {players[0].oneCardLeftCounter} times </div>
                     <div>Player {players[1].index} had one card {players[1].oneCardLeftCounter} times </div>
-                </div>
+                </div> */}
+                {!gameData.gameOver? <button className="btn" onClick={()=>showStatistics(false)}>Back To Game</button> :
+                <button className="btn" onClick={()=>updateUserInGame(false)}>Back To Lobby</button>}
+
             </div>
         );
     }

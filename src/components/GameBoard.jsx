@@ -5,6 +5,7 @@ import GameRoom from './GameRoom.jsx';
 import PlayerComponent from './PlayerComponent.jsx';
 import TableDeck from './TableDeck.jsx';
 import "../../src/style.css";
+import Statistics from "../components/Statistics.jsx";
 
 export default class GameBoard extends React.Component {
     constructor(props) {
@@ -16,6 +17,8 @@ export default class GameBoard extends React.Component {
         this.checkCard = this.checkCard.bind(this);
         this.colorChangedInWindow = this.colorChangedInWindow.bind(this);
         this.imDoneButtonClicked = this.imDoneButtonClicked.bind(this);
+        this.updatePlayerWatcher = this.updatePlayerWatcher.bind(this);
+        this.showStatistics = this.showStatistics.bind(this);
         this.gameToCheck = {
             gameId: props.gameId,
             userName: props.user.name
@@ -24,8 +27,7 @@ export default class GameBoard extends React.Component {
 
         this.state = {
             gameData: {},
-            // ImDoneIsHidden: true,
-            // changeColorWindowIsOpen: false
+            showStatistics: false
         }
     }
 
@@ -71,41 +73,68 @@ export default class GameBoard extends React.Component {
             color: color
         }
         fetch('/games/setColorToTopCard', { method: 'POST', body: JSON.stringify(data), credentials: 'include' })
-        
+
     }
 
     imDoneButtonClicked() {
         fetch('/games/imDoneButtonClicked', { method: 'POST', body: JSON.stringify(this.gameToCheck), credentials: 'include' })
     }
 
+    updatePlayerWatcher() {
+        //bfdbggdfsgs
+        fetch('/games/updatePlayerWatcher', { method: 'POST', body: JSON.stringify(this.gameToCheck), credentials: 'include' });
+    }
+
+    showStatistics(value) {
+        this.setState({ showStatistics: value });
+    }
+
+    // quitTheGame(value)
+    // {
+    //     if(this.state.gameData)
+    //     this.props.updateUserInGame(value,'');
+    // }
 
     render() {
         const { gameData } = this.state;
-        const { user } = this.props;
+        const { user, updateUserInGame } = this.props;
         return (
             <div>
-                {gameData && gameData.players && (
+                {!gameData.gameOver ?
                     <div>
-                        <TableDeck cardOnTop={gameData.cardOnTop} checkStatusOnTableDeckClicked={this.checkStatusOnTableDeckClicked} />
-                        <div>End of deck</div>
-                        {gameData.players.map((player, index) => (
-                            player &&
-                            (<div key={index}>
-                                {(player.name === user.name && player.changeColorWindowIsOpen) && <div className="colorWindowContainer">
-                                    <div className="colorWindow">
-                                        <button className="blue" onClick={() => this.colorChangedInWindow("blue")}></button>
-                                        <button className="red" onClick={() => this.colorChangedInWindow("red")}></button>
-                                        <button className="yellow" onClick={() => this.colorChangedInWindow("yellow")}></button>
-                                        <button className="green" onClick={() => this.colorChangedInWindow("green")}></button>
-                                    </div>
-                                </div>}
-                                {(player.name === user.name && !player.ImDoneIsHidden) && <button className="ImDoneButton" onClick={() => this.imDoneButtonClicked()}>I'm done</button>}
-                                <PlayerComponent hidden={player.noCardsLeft} user={user} checkCard={this.checkCard} player={player} numberOfPlayer={gameData.numberOfPlayer} gameData ={gameData} /*cardMarginLeft={cardMarginLeft[1]}*/ />
-                            </div>)
-                        )
+                        {gameData && gameData.players && (
+                            <div>
+                                <TableDeck cardOnTop={gameData.cardOnTop} checkStatusOnTableDeckClicked={this.checkStatusOnTableDeckClicked} />
+                                <div>End of deck</div>
+                                <button className="btn" onClick={() => this.showStatistics(true)}>Show Statistics </button>
+
+                                {gameData.players.map((player, index) => (
+                                    player &&
+                                    (<div key={index}>
+                                        {player.name === user.name && this.state.showStatistics && <Statistics showStatistics={this.showStatistics} gameData={gameData} updateUserInGame={updateUserInGame}/>}
+                                        {(player.name === user.name && player.changeColorWindowIsOpen) && <div className="colorWindowContainer">
+                                            <div className="colorWindow">
+                                                <button className="blue" onClick={() => this.colorChangedInWindow("blue")}></button>
+                                                <button className="red" onClick={() => this.colorChangedInWindow("red")}></button>
+                                                <button className="yellow" onClick={() => this.colorChangedInWindow("yellow")}></button>
+                                                <button className="green" onClick={() => this.colorChangedInWindow("green")}></button>
+                                            </div>
+                                        </div>}
+                                        {(player.name === user.name && !player.ImDoneIsHidden) && <button className="ImDoneButton" onClick={() => this.imDoneButtonClicked()}>I'm done</button>}
+                                        <PlayerComponent hidden={player.noCardsLeft} user={user} checkCard={this.checkCard} player={player} numberOfPlayer={gameData.numberOfPlayer} gameData={gameData} /*cardMarginLeft={cardMarginLeft[1]}*/ />
+                                        {player.name === user.name && (player.noCardsLeft && !player.watcher) && (gameData.playersWithCards > 1) && <div className="WatcherChoiceContainer">
+                                            <div className="watcherChoice">
+                                                <button className="btn" onClick={() => this.updatePlayerWatcher()}>Stay And Watch</button>
+                                                <button className="btn" onClick={() => updateUserInGame(false, '')}>Back To Lobby</button>
+                                            </div>
+                                        </div>}
+                                    </div>)
+                                )
+                                )}
+                            </div>
                         )}
-                    </div>
-                )}
+                    </div> :
+                    <Statistics showStatistics={this.showStatistics} gameData={gameData} updateUserInGame={updateUserInGame}/>}
             </div>
         );
     }

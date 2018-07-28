@@ -104,6 +104,21 @@ function findCurrGame(bodyObj) {
     return gamesList.find(game => game.id === Number(gameId));
 }
 
+
+gamesManagement.post('/updatePlayerWatcher', (req,res) =>{
+    console.log("==========updatePlayerWatcher=========")
+    const bodyObj = JSON.parse(req.body);
+    const userName = bodyObj.userName;
+    const gameIndex = gamesList.findIndex(game => game.id === Number(bodyObj.gameId));
+    const playerIndex = gamesList[gameIndex].gameData.players.findIndex(player =>player.name === userName )
+    console.log("gamesList[gameIndex].gameData.playersName[playerIndex].watcher = " + gamesList[gameIndex].gameData.playersName[playerIndex].watcher)
+    gamesList[gameIndex].gameData.players[playerIndex].watcher = true;
+    console.log("gamesList[gameIndex].gameData.playersName[playerIndex].watcher = " + gamesList[gameIndex].gameData.playersName[playerIndex].watcher)
+
+    res.sendStatus(200);
+});
+
+
 gamesManagement.post('/checkStatusOnTableDeckClicked', (req, res) => {
     const bodyObj = JSON.parse(req.body);
     const currentGame = findCurrGame(bodyObj);
@@ -114,6 +129,7 @@ gamesManagement.post('/checkStatusOnTableDeckClicked', (req, res) => {
 
 function createGame(currentGame) {
     currentGame.gameData.takenCardsCounter = 0;
+    currentGame.gameData.numOfActivePlayer = currentGame.numOfPlayers;
     currentGame.gameData.playersWithCards = currentGame.numOfPlayers;
     currentGame.gameData.numOfPlayers = currentGame.numOfPlayers;
     currentGame.gameData.numOfTurns = 0
