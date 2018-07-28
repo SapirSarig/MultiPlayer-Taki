@@ -17,13 +17,14 @@ class Statistics extends Component {
                 <div>Cards in deck: {gameData.deck.length - gameData.takenCardsCounter} </div>
                 <div>Number of turns: {gameData.numOfTurns} </div>
 
-                {gameData.players.map((player, index) => {
-                    <div>
-                        <div> {player.name} had one card: {player.oneCardLeftCounter} </div>
-                        <div> {player.name} avg of turns time: {player.avg} </div>
-                    </div>
-                })}
 
+                {gameData.players.map((player, index) => (
+                    player && (
+                        <div key={index}>
+                            <div> {player.name} had one card: {player.oneCardLeftCounter} </div>
+                            <div> {player.name} avg of turns time: {player.avg} </div>
+                        </div>
+                    )))}
 
                 {/* <div className="leftData">
                     <div>Time: {timer}</div>
@@ -33,7 +34,7 @@ class Statistics extends Component {
                 <div className="rightData">
                     <div>Avg of turns time: {avgTimeForTurn}</div>
                     <div>Avg of turns time in all games: {avgTimeForTurnPerGame}</div>
-                    <div>Player {players[0].index} had one card {players[0].oneCardLeftCounter} times </div>
+                    <div>ffPlayer {players[0].index} had one card {players[0].oneCardLeftCounter} times </div>
                     <div>Player {players[1].index} had one card {players[1].oneCardLeftCounter} times </div>
                 </div> */}
                 {!gameData.gameOver ? <button className="btn" onClick={() => showStatistics(false)}>Hide Statistics</button> :
