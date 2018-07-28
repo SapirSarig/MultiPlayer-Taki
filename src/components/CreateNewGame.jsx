@@ -15,7 +15,8 @@ export default class CreateNewGame extends React.Component {
                 numOfRegisterd: 0,
                 Active: false,
                 gameData: {
-                    playersName: []
+                    playersName: [],
+                    numOfActivePlayers:0
                 }
             },
 

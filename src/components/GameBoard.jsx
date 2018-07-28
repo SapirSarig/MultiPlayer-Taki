@@ -19,6 +19,7 @@ export default class GameBoard extends React.Component {
         this.imDoneButtonClicked = this.imDoneButtonClicked.bind(this);
         this.updatePlayerWatcher = this.updatePlayerWatcher.bind(this);
         this.showStatistics = this.showStatistics.bind(this);
+        this.quitTheGame = this.quitTheGame.bind(this);
         this.gameToCheck = {
             gameId: props.gameId,
             userName: props.user.name
@@ -89,15 +90,16 @@ export default class GameBoard extends React.Component {
         this.setState({ showStatistics: value });
     }
 
-    // quitTheGame(value)
-    // {
-    //     if(this.state.gameData)
-    //     this.props.updateUserInGame(value,'');
-    // }
+    quitTheGame(value)
+    {
+        clearTimeout(this.timeoutId);
+        fetch('/games/updateActivePlayers', { method: 'POST', body: JSON.stringify(this.gameToCheck), credentials: 'include' });
+        this.props.quitTheGame(value,'');
+    }
 
     render() {
         const { gameData } = this.state;
-        const { user, updateUserInGame } = this.props;
+        const { user } = this.props;
         return (
             <div>
                 {!gameData.gameOver ?
@@ -111,7 +113,7 @@ export default class GameBoard extends React.Component {
                                 {gameData.players.map((player, index) => (
                                     player &&
                                     (<div key={index}>
-                                        {player.name === user.name && this.state.showStatistics && <Statistics showStatistics={this.showStatistics} gameData={gameData} updateUserInGame={updateUserInGame}/>}
+                                        {player.name === user.name && this.state.showStatistics && <Statistics showStatistics={this.showStatistics} gameData={gameData} quitTheGame={this.quitTheGame}/>}
                                         {(player.name === user.name && player.changeColorWindowIsOpen) && <div className="colorWindowContainer">
                                             <div className="colorWindow">
                                                 <button className="blue" onClick={() => this.colorChangedInWindow("blue")}></button>
@@ -125,7 +127,7 @@ export default class GameBoard extends React.Component {
                                         {player.name === user.name && (player.noCardsLeft && !player.watcher) && (gameData.playersWithCards > 1) && <div className="WatcherChoiceContainer">
                                             <div className="watcherChoice">
                                                 <button className="btn" onClick={() => this.updatePlayerWatcher()}>Stay And Watch</button>
-                                                <button className="btn" onClick={() => updateUserInGame(false, '')}>Back To Lobby</button>
+                                                <button className="btn" onClick={() => this.quitTheGame(false, '')}>Back To Lobby</button>
                                             </div>
                                         </div>}
                                     </div>)
@@ -134,7 +136,7 @@ export default class GameBoard extends React.Component {
                             </div>
                         )}
                     </div> :
-                    <Statistics showStatistics={this.showStatistics} gameData={gameData} updateUserInGame={updateUserInGame}/>}
+                    <Statistics showStatistics={this.showStatistics} gameData={gameData} quitTheGame={this.quitTheGame}/>}
             </div>
         );
     }

@@ -10,6 +10,7 @@ export default class GameRoom extends React.Component {
         }
         this.getCurrGameData = this.getCurrGameData.bind(this);
         this.updateUserQuitGame = this.updateUserQuitGame.bind(this);
+        this.quitTheGame = this.quitTheGame.bind(this);
     }
 
     componentDidMount() {
@@ -41,8 +42,14 @@ export default class GameRoom extends React.Component {
             .catch(err => { throw err });
     }
 
+    quitTheGame(value)
+    {
+        clearTimeout(this.timeoutId);
+        this.props.updateUserInGame(value,'');
+    }
+
     render() {
-        const { user, updateUserInGame } = this.props;
+        const { user } = this.props;
         const { currGame } = this.state;
         let isGameActive = currGame.Active;
 
@@ -56,7 +63,7 @@ export default class GameRoom extends React.Component {
                                 Quit Game</button>
                         </div>
                     </div>) :
-                    (<GameBoard user = {user} gameId = {currGame.id} updateUserInGame = {updateUserInGame}/>)
+                    (<GameBoard user = {user} gameId = {currGame.id} quitTheGame = {this.quitTheGame}/>)
                 }
             </div>
         )

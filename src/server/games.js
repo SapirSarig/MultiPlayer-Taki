@@ -127,9 +127,22 @@ gamesManagement.post('/checkStatusOnTableDeckClicked', (req, res) => {
     res.sendStatus(200);
 });
 
+gamesManagement.post('/updateActivePlayers', (req,res)=>{
+    const bodyObj = JSON.parse(req.body);
+    const gameIndex = gamesList.findIndex(game => game.id === Number(bodyObj.gameId));
+    gamesList[gameIndex].gameData.numOfActivePlayers--;
+    if(gamesList[gameIndex].gameData.numOfActivePlayers===0)
+    {
+        gamesList[gameIndex].Active = false;
+        gamesList[gameIndex].gameData = { playersName:[],numOfActivePlayers:0 };
+        gamesList[gameIndex].numOfRegisterd = 0;
+    }
+    res.sendStatus(200);
+});
+
 function createGame(currentGame) {
     currentGame.gameData.takenCardsCounter = 0;
-    currentGame.gameData.numOfActivePlayer = currentGame.numOfPlayers;
+    currentGame.gameData.numOfActivePlayers = currentGame.numOfPlayers;
     currentGame.gameData.playersWithCards = currentGame.numOfPlayers;
     currentGame.gameData.numOfPlayers = currentGame.numOfPlayers;
     currentGame.gameData.numOfTurns = 0

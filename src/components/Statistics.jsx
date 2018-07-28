@@ -9,7 +9,7 @@ class Statistics extends Component {
 
     render() {
         let { numOfTurns, players, timer, avgTimeForTurn, avgTimeForTurnPerGame, numOfCardsInDeck } = this.props;
-        const {showStatistics, gameData, updateUserInGame} = this.props;
+        const {showStatistics, gameData , quitTheGame} = this.props;
         return (
             <div className="Statistics">
                 Statistics
@@ -25,7 +25,7 @@ class Statistics extends Component {
                     <div>Player {players[1].index} had one card {players[1].oneCardLeftCounter} times </div>
                 </div> */}
                 {!gameData.gameOver? <button className="btn" onClick={()=>showStatistics(false)}>Back To Game</button> :
-                <button className="btn" onClick={()=>updateUserInGame(false)}>Back To Lobby</button>}
+                <button className="btn" onClick={()=>quitTheGame(false)}>Back To Lobby</button>}
 
             </div>
         );

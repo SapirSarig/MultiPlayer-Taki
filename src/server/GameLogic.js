@@ -388,7 +388,7 @@ function setColorToTopCard(color, gameData) {
     newCard.color = color;
     newCard.imgSourceFront = `./resources/cards/change_colorful_${color}.png`;
     setNewcardOnTop(newCard, gameData);
-    changeTurn(1, gameData);
+    checkPlayerWin(gameData.players[gameData.turnIndex],1,gameData);
 }
 
 function setNewcardOnTop(cardToPutOnTop, gameData) {
