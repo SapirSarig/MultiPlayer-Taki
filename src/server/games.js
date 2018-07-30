@@ -162,11 +162,11 @@ function createGame(currentGame) {
     currentGame.gameData.openTaki = false;
     currentGame.gameData.cardOnTop = null;
     currentGame.gameData.gameOver = false;
+    GameLogic.gameTimer();
     currentGame.gameData.deck = GameLogic.createDeck();
     currentGame.gameData.players = GameLogic.shareCardsToPlayers(currentGame.numOfRegisterd, currentGame.gameData);
     currentGame.gameData.cardOnTop = GameLogic.drawOpeningCard(currentGame.gameData);
     //console.log("gameTIMErss")
-    GameLogic.gameTimer();
 }
 
 module.exports = gamesManagement;

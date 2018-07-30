@@ -60,7 +60,7 @@ export default class GameBoard extends React.Component {
               //  setStateInBoardCB("timer", fullTime, fullTime === "00:02");
             }
             else {
-                clearInterval(timeInterval);
+                clearInterval(gameStat.timeInterval);
             }
         };
 
@@ -153,6 +153,11 @@ export default class GameBoard extends React.Component {
     render() {
         const { gameData,gameStat } = this.state;
         const { user } = this.props;
+        if(gameData.gameOver)
+        {
+            clearInterval(gameStat.timeInterval);
+        }
+        let timer = gameStat.fullTime;
         return (
             <div>
                 {!gameData.gameOver ?
@@ -165,7 +170,7 @@ export default class GameBoard extends React.Component {
                                 {gameData.players.map((player, index) => (
                                     player &&
                                     (<div key={index}>
-                                        {player.name === user.name && this.state.showStatistics && <Statistics showStatistics={this.showStatistics} gameData={gameData} quitTheGame={this.quitTheGame} user={user} gameStat = {gameStat}/>}
+                                        {player.name === user.name && this.state.showStatistics && <Statistics showStatistics={this.showStatistics} gameData={gameData} quitTheGame={this.quitTheGame} user={user} gameStat = {gameStat} timer = {timer}/>}
                                         {(player.name === user.name && player.changeColorWindowIsOpen) && <div className="colorWindowContainer">
                                             <div className="colorWindow">
                                                 <button className="blue" onClick={() => this.colorChangedInWindow("blue")}></button>
@@ -188,7 +193,7 @@ export default class GameBoard extends React.Component {
                             </div>
                         )}
                     </div> :
-                    <Statistics showStatistics={this.showStatistics} gameData={gameData} quitTheGame={this.quitTheGame}/>}
+                    <Statistics showStatistics={this.showStatistics} quitTheGame={this.quitTheGame} gameData={gameData} user = {user} gameStat= {gameStat} timer={timer}/>}
             </div>
         );
     }

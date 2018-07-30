@@ -1,6 +1,6 @@
 const cardColors = { 0: "blue", 1: "red", 2: "green", 3: "yellow" }
 const numOfColors = 4;
-const numOfCardsForEachPlayer = 5;
+const numOfCardsForEachPlayer = 1;
 let setStateInBoardCB;
 let takenCardsCounter = 0;
 let turnIndex = 2;
@@ -202,7 +202,7 @@ function shareCardsToPlayers(numOfPlayers, gameData) {
             changeColorWindowIsOpen: false,
             noCardsLeft: false,
             watcher: false,
-            startTime: "00:01",
+            startTime: getCurrTime(),
             endTime: "",
             turnTime: [],
             avg: 0
@@ -475,6 +475,7 @@ function newTimeOut(player, deck, numOfPlayers, arrOfSameCards, takiTime) {
 
 function gameTimer(gameData) {
     console.log("ENTER GAMETIMER!!!");
+    timeHandler();
     timeInterval = setInterval(function () { timeHandler() }, 1000);
 }
 
@@ -496,6 +497,14 @@ function timeHandler(gameStat) {
 // gameData.gameStat.timeInterval = setInterval(handler, 1000);
 // handler(gameData.gameStat);
 
+function getCurrTime()
+{
+    console.log("***********getCurrTime*************");
+    console.log("fullTime = " + fullTime);
+    const startTimer = fullTime;
+    console.log("startTimer = " + startTimer);
+    return startTimer;
+}
 
 function findAvgOfTurnTime(gameData) {
     let sum = 0;
@@ -570,6 +579,9 @@ function changeTurn(number, gameData) {
 
 
 function setTurnTime(gameData) {
+    console.log("start time: " + gameData.players[gameData.turnIndex].startTime);
+    console.log("end time: " + gameData.players[gameData.turnIndex].endTime);
+
     //if (turnIndex === players[1].index) {
     let start = gameData.players[gameData.turnIndex].startTime.split(":");
     let startMin = Number(start[0]);
@@ -597,6 +609,8 @@ function playerHasNo2PlusCards(player, numOfPlayers, deck) {
 }
 
 function checkPlayerWin(player, num, gameData) {
+    gameData.players[gameData.turnIndex].endTime = fullTime;
+    setTurnTime(gameData);
     console.log("**checkPlayerWin**")
     if (player.cards.length === 0) {
         console.log("***no cards left for player: " + player.index);
@@ -606,7 +620,7 @@ function checkPlayerWin(player, num, gameData) {
         if (gameData.playersWithCards === 1) {
             gameData.gameOver = true;
             console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@ ---- GAME --- OVER ----@@@@@@@@@@@@@@@@@@@@@@")
-            stopTheGame(gameData);
+            //stopTheGame(gameData);
         }
         else {
             changeTurn(num, gameData);
@@ -626,9 +640,9 @@ function stopTheGame(gameData)
     // avgTurnTimePerGame.push(avg);
     // this.findAvgOfTurnTime(avgTurnTimePerGame, true);
     // endTime = fullTime;
-    stopTimer = true;
-    fullTime = "";
-    startTime = "00:01"
+    //stopTimer = true;
+    // fullTime = "";
+    // startTime = "00:01"
     // gameOver = true;
     //alert("game over");
 }
