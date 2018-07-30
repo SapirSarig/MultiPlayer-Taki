@@ -13,7 +13,7 @@ class PlayerComponent extends Component {
 
         //fsdfsra
         return (
-            <div className={"player" + player.name} >
+            <div>
                 <div className="text">{player.name}</div>
                 <div className="playerCardsContainer" style = {isPlayerTurn}>
                     {player.cards.map(card => (

@@ -31,15 +31,15 @@ export default class GameBoard extends React.Component {
             gameData: {},
             showStatistics: false,
             gameStat:
-            {
-                fullTime: "",
-                startTime: "00:01",
-                endTime: 0,
-                sec: 0,
-                min: 0,
-                stopTimer: false,
-                timeInterval: 0
-            }
+                {
+                    fullTime: "",
+                    startTime: "00:01",
+                    endTime: 0,
+                    sec: 0,
+                    min: 0,
+                    stopTimer: false,
+                    timeInterval: 0
+                }
         }
     }
 
@@ -49,7 +49,7 @@ export default class GameBoard extends React.Component {
     }
 
     gameTimer() {
-        const {gameStat} = this.state;
+        const { gameStat } = this.state;
         let handler = function () {
             if (!gameStat.stopTimer) {
                 if (++gameStat.sec === 60) {
@@ -57,7 +57,7 @@ export default class GameBoard extends React.Component {
                     ++gameStat.min;
                 }
                 gameStat.fullTime = (gameStat.min < 10 ? "0" + gameStat.min : gameStat.min) + ":" + (gameStat.sec < 10 ? "0" + gameStat.sec : gameStat.sec);
-              //  setStateInBoardCB("timer", fullTime, fullTime === "00:02");
+                //  setStateInBoardCB("timer", fullTime, fullTime === "00:02");
             }
             else {
                 clearInterval(gameStat.timeInterval);
@@ -67,7 +67,7 @@ export default class GameBoard extends React.Component {
         gameStat.timeInterval = setInterval(handler, 1000);
         handler();
 
-        this.setState({gameStat});
+        this.setState({ gameStat });
     }
 
     // gameTimer() {
@@ -76,7 +76,7 @@ export default class GameBoard extends React.Component {
     //     gameStat.timeInterval = setInterval(function () { this.timeHandler() }, 1000);
     //     this.setState({gameStat});  
     // }
-    
+
     // timeHandler() {
     //     const {gameStat} = this.state;
 
@@ -143,57 +143,67 @@ export default class GameBoard extends React.Component {
         this.setState({ showStatistics: value });
     }
 
-    quitTheGame(value)
-    {
+    quitTheGame(value) {
         clearTimeout(this.timeoutId);
         fetch('/games/updateActivePlayers', { method: 'POST', body: JSON.stringify(this.gameToCheck), credentials: 'include' });
-        this.props.quitTheGame(value,'');
+        this.props.quitTheGame(value, '');
     }
 
     render() {
-        const { gameData,gameStat } = this.state;
+        const { gameData, gameStat, showStatistics } = this.state;
         const { user } = this.props;
-        if(gameData.gameOver)
-        {
+        let myPlayer = {};
+        let allPlayersWithOutMe = [];
+        if (gameData.players) {
+            myPlayer = gameData.players.find(player => player.name === user.name);
+            allPlayersWithOutMe = gameData.players.filter(player => player.name !== user.name);
+        }
+        if (gameData.gameOver) {
             clearInterval(gameStat.timeInterval);
         }
         let timer = gameStat.fullTime;
+
         return (
             <div>
                 {!gameData.gameOver ?
                     <div>
-                        {gameData && gameData.players && (
+                        {gameData && gameData.players && myPlayer && allPlayersWithOutMe && (
                             <div>
                                 <TableDeck cardOnTop={gameData.cardOnTop} checkStatusOnTableDeckClicked={this.checkStatusOnTableDeckClicked} />
-                                <button className="btn" onClick={() => this.showStatistics(true)}>Show Statistics </button>
-
-                                {gameData.players.map((player, index) => (
+                                <div className="Statistics">
+                                    {showStatistics ? <button className="btn" onClick={() => this.showStatistics(false)}>Hide Statistics</button> :
+                                        <button className="btn" onClick={() => this.showStatistics(true)}>Show Statistics </button>}
+                                    {myPlayer.name === user.name && showStatistics && <Statistics showStatistics={this.showStatistics} gameData={gameData} quitTheGame={this.quitTheGame} user={user} gameStat={gameStat} timer={timer} />}
+                                </div>
+                                <div className={`myPlayer`}>
+                                  {(myPlayer.name === user.name && !myPlayer.ImDoneIsHidden) && <button className="ImDoneButton" onClick={() => this.imDoneButtonClicked()}>I'm done</button>}
+                                    <PlayerComponent hidden={myPlayer.noCardsLeft} user={user} checkCard={this.checkCard} player={myPlayer} numberOfPlayer={gameData.numberOfPlayer} gameData={gameData} /*cardMarginLeft={cardMarginLeft[1]}*/ />
+                                </div>
+                                {allPlayersWithOutMe.map((player, index) => (
                                     player &&
-                                    (<div key={index}>
-                                        {player.name === user.name && this.state.showStatistics && <Statistics showStatistics={this.showStatistics} gameData={gameData} quitTheGame={this.quitTheGame} user={user} gameStat = {gameStat} timer = {timer}/>}
-                                        {(player.name === user.name && player.changeColorWindowIsOpen) && <div className="colorWindowContainer">
-                                            <div className="colorWindow">
-                                                <button className="blue" onClick={() => this.colorChangedInWindow("blue")}></button>
-                                                <button className="red" onClick={() => this.colorChangedInWindow("red")}></button>
-                                                <button className="yellow" onClick={() => this.colorChangedInWindow("yellow")}></button>
-                                                <button className="green" onClick={() => this.colorChangedInWindow("green")}></button>
-                                            </div>
-                                        </div>}
-                                        {(player.name === user.name && !player.ImDoneIsHidden) && <button className="ImDoneButton" onClick={() => this.imDoneButtonClicked()}>I'm done</button>}
-                                        <PlayerComponent hidden={player.noCardsLeft} user={user} checkCard={this.checkCard} player={player} numberOfPlayer={gameData.numberOfPlayer} gameData={gameData} /*cardMarginLeft={cardMarginLeft[1]}*/ />
-                                        {player.name === user.name && (player.noCardsLeft && !player.watcher) && (gameData.playersWithCards > 1) && <div className="WatcherChoiceContainer">
-                                            <div className="watcherChoice">
-                                                <button className="btn" onClick={() => this.updatePlayerWatcher()}>Stay And Watch</button>
-                                                <button className="btn" onClick={() => this.quitTheGame(false, '')}>Back To Lobby</button>
-                                            </div>
-                                        </div>}
+                                    (<div key={index} className={`player${allPlayersWithOutMe.length === 1 ? index + 2 : index + 1}`}>
+                                        <PlayerComponent hidden={player.noCardsLeft} user={user} checkCard={this.checkCard} player={player} numberOfPlayer={gameData.numberOfPlayer} gameData={gameData} index={index} /*cardMarginLeft={cardMarginLeft[1]}*/ />
                                     </div>)
-                                )
-                                )}
+                                ))}
+
+                                {(myPlayer.name === user.name && myPlayer.changeColorWindowIsOpen) && <div className="colorWindowContainer">
+                                    <div className="colorWindow">
+                                        <button className="blue" onClick={() => this.colorChangedInWindow("blue")}></button>
+                                        <button className="red" onClick={() => this.colorChangedInWindow("red")}></button>
+                                        <button className="yellow" onClick={() => this.colorChangedInWindow("yellow")}></button>
+                                        <button className="green" onClick={() => this.colorChangedInWindow("green")}></button>
+                                    </div>
+                                </div>}
+                                {myPlayer.name === user.name && (myPlayer.noCardsLeft && !myPlayer.watcher) && (gameData.playersWithCards > 1) && <div className="WatcherChoiceContainer">
+                                    <div className="watcherChoice">
+                                        <button className="btn" onClick={() => this.updatePlayerWatcher()}>Stay And Watch</button>
+                                        <button className="btn" onClick={() => this.quitTheGame(false, '')}>Back To Lobby</button>
+                                    </div>
+                                </div>}
                             </div>
                         )}
                     </div> :
-                    <Statistics showStatistics={this.showStatistics} quitTheGame={this.quitTheGame} gameData={gameData} user = {user} gameStat= {gameStat} timer={timer}/>}
+                    <Statistics showStatistics={this.showStatistics} quitTheGame={this.quitTheGame} gameData={gameData} user={user} gameStat={gameStat} timer={timer} />}
             </div>
         );
     }

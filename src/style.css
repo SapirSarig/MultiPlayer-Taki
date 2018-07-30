@@ -178,3 +178,45 @@
   .text, .user-info-area, .username-label, .userList, .CreateNewGame-wrapper, .WaitingScreen {
       color:white;
   }
+
+  .tableDeck {
+    position: absolute;
+    right: 35%;
+    top: 35%;
+  }
+
+  .myPlayer {
+    right: 25%;
+    bottom: 0;
+    position: fixed;
+  }
+
+  .player1{ 
+    position: absolute;
+    justify-content: center;
+    transform: rotate(270deg);
+    right: 41px;
+    top: 36%;
+  }
+
+  .player2{
+    position: absolute;
+    top: 0;
+    right: 25%;
+    transform: rotate(180deg);
+  }
+
+  .player3{
+    justify-content: center;
+    transform: rotate(90deg);
+    position: absolute;
+    left: 41px;
+    top: 36%;
+  }
+
+  .Statistics{
+    color: white;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+  }

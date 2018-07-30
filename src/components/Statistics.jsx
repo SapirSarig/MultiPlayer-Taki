@@ -11,7 +11,7 @@ class Statistics extends Component {
         const { showStatistics, gameData, quitTheGame, user, gameStat, timer } = this.props;
         const showStatisticBtn = true;
         return (
-            <div className="Statistics">
+            <div>
                 Statistics
                 <div>Time: {timer} </div>
                 <div>Cards in deck: {gameData.deck.length - gameData.takenCardsCounter} </div>
@@ -30,7 +30,7 @@ class Statistics extends Component {
                             <div> {player.name} avg of turns time: {player.avg} </div>
                         </div>
                     ))}
-                {!gameData.gameOver ? <button className="btn" onClick={() => showStatistics(false)}>Hide Statistics</button> :
+                {gameData.gameOver &&
                     <button className="btn" onClick={() => quitTheGame(false)}>Back To Lobby</button>}
 
             </div>

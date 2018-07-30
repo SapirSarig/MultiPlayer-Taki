@@ -1,6 +1,6 @@
 const cardColors = { 0: "blue", 1: "red", 2: "green", 3: "yellow" }
 const numOfColors = 4;
-const numOfCardsForEachPlayer = 1;
+const numOfCardsForEachPlayer = 8;
 let setStateInBoardCB;
 let takenCardsCounter = 0;
 let turnIndex = 2;
