@@ -1,6 +1,6 @@
 const cardColors = { 0: "blue", 1: "red", 2: "green", 3: "yellow" }
 const numOfColors = 4;
-const numOfCardsForEachPlayer = 1;
+const numOfCardsForEachPlayer = 5;
 let setStateInBoardCB;
 let takenCardsCounter = 0;
 let turnIndex = 2;
@@ -20,8 +20,9 @@ let gameNum = 1;
 let tournamentIsDone = false;
 
 //statistics
-let turnTime = [];
-let avgTurnTimePerGame = [];
+//let turnTime = [];
+//let avgTurnTimePerGame = [];
+let timeInterval;
 let fullTime = "";
 let startTime = "00:01";
 let endTime;
@@ -201,6 +202,8 @@ function shareCardsToPlayers(numOfPlayers, gameData) {
             changeColorWindowIsOpen: false,
             noCardsLeft: false,
             watcher: false,
+            startTime: "00:01",
+            endTime: "",
             turnTime: [],
             avg: 0
         });
@@ -414,9 +417,9 @@ function isSpecialCard(player, gameData, cardOnTopColor) {
     else if (gameData.cardOnTop.value === "stop") {
         if (player.cards.length === 0) {
             //alert("stop the game");
-
-            //to do!!
-            stopTheGame();
+            checkPlayerWin(player, 2, gameData);
+            // //to do!!
+            // stopTheGame();
         }
         else {
             changeTurn(2, gameData);
@@ -472,20 +475,21 @@ function newTimeOut(player, deck, numOfPlayers, arrOfSameCards, takiTime) {
 
 function gameTimer(gameData) {
     console.log("ENTER GAMETIMER!!!");
-    gameData.gameStat.timeInterval = setInterval(function () { timeHandler(gameData.gameStat) }, 1000);
+    timeInterval = setInterval(function () { timeHandler() }, 1000);
 }
 
 function timeHandler(gameStat) {
-    console.log(gameStat.fullTime);
-    if (!gameStat.stopTimer) {
-        if (++gameStat.sec === 60) {
-            gameStat.sec = 0;
-            ++gameStat.min;
+
+    if (!stopTimer) {
+        if (++sec === 60) {
+            sec = 0;
+            ++min;
         }
-        gameStat.fullTime = (gameStat.min < 10 ? "0" + gameStat.min : gameStat.min) + ":" + (gameStat.sec < 10 ? "0" + gameStat.sec : gameStat.sec);
+        fullTime = (min < 10 ? "0" + min : min) + ":" + (sec < 10 ? "0" + sec : sec);
+        console.log("server timer: " + fullTime);
     }
     else {
-        clearInterval(gameStat.timeInterval);
+        clearInterval(timeInterval);
     }
 }
 // //setInterval(handler, 1000);
@@ -500,19 +504,20 @@ function findAvgOfTurnTime(gameData) {
     }
     let avgNum = Number(sum / gameData.players[gameData.turnIndex].turnTime.length);
     gameData.players[gameData.turnIndex].avg = Number(avgNum.toFixed(2));
+    console.log("AVG: " + gameData.players[gameData.turnIndex].avg);
 }
 
 function changeTurn(number, gameData) {
     console.log("**** change TURN ******");
     console.log("turnIndex before changing turn" + gameData.turnIndex);
     //console.log("numofplayers " + gameData.numOfPlayers);
-    gameData.gameStat.endTime = gameData.gameStat.fullTime;
+    gameData.players[gameData.turnIndex].endTime = fullTime;
     setTurnTime(gameData);
     gameData.turnIndex = (gameData.turnIndex + number) % gameData.numOfPlayers;
     while (gameData.players[gameData.turnIndex].noCardsLeft === true) {
         gameData.turnIndex = (gameData.turnIndex + 1) % gameData.numOfPlayers;
     }
-    gameData.gameStat.startTime = gameData.gameStat.fullTime;
+    gameData.players[gameData.turnIndex].startTime = fullTime;
     console.log("turnIndex after changing turn" + gameData.turnIndex);
     gameData.numOfTurns++;
 }
@@ -566,13 +571,13 @@ function changeTurn(number, gameData) {
 
 function setTurnTime(gameData) {
     //if (turnIndex === players[1].index) {
-    let start = gameData.gameStat.startTime.split(":");
+    let start = gameData.players[gameData.turnIndex].startTime.split(":");
     let startMin = Number(start[0]);
     startMin = startMin * 60;
     let startSec = Number(start[1]);
     let fullStartTimeInSec = startMin + startSec;
 
-    let end = gameData.gameStat.endTime.split(":");
+    let end = gameData.players[gameData.turnIndex].endTime.split(":");
     let endMin = Number(end[0]);
     endMin = endMin * 60;
     let endSec = Number(end[1]);
@@ -601,10 +606,10 @@ function checkPlayerWin(player, num, gameData) {
         if (gameData.playersWithCards === 1) {
             gameData.gameOver = true;
             console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@ ---- GAME --- OVER ----@@@@@@@@@@@@@@@@@@@@@@")
-            stopTheGame();
+            stopTheGame(gameData);
         }
         else {
-            changeTurn(1, gameData);
+            changeTurn(num, gameData);
         }
         //todo!!
         //turnIndex === gameData.players[gameData.turnIndex].index ? winnerSound.play() : loserSound.play();
@@ -616,11 +621,14 @@ function checkPlayerWin(player, num, gameData) {
     }
 }
 
-function stopTheGame() {
+function stopTheGame(gameData)
+{
     // avgTurnTimePerGame.push(avg);
     // this.findAvgOfTurnTime(avgTurnTimePerGame, true);
     // endTime = fullTime;
-    // stopTimer = true;
+    stopTimer = true;
+    fullTime = "";
+    startTime = "00:01"
     // gameOver = true;
     //alert("game over");
 }
@@ -716,7 +724,7 @@ function rivalPlay(deck, numOfPlayers) {
             if (plus2 > 0 || cardOnTop.value === "2plus") { // there is an active/not active 2plus card on deck
                 this.removeAndSetTopCard(players[0], plus2Cards[0], deck);
                 plus2 += 2;
-                this.checkPlayerWin(players[0], 1, numOfPlayers, deck);
+                checkPlayerWin(players[0], 1, numOfPlayers, deck);
                 goodCardFound = true;
             }
             else {

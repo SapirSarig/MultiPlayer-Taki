@@ -19,6 +19,9 @@ export default class GameBoard extends React.Component {
         this.updatePlayerWatcher = this.updatePlayerWatcher.bind(this);
         this.showStatistics = this.showStatistics.bind(this);
         this.quitTheGame = this.quitTheGame.bind(this);
+        this.gameTimer = this.gameTimer.bind(this);
+        //this.timeHandler = this.timeHandler.bind(this);
+
         this.gameToCheck = {
             gameId: props.gameId,
             userName: props.user.name
@@ -26,13 +29,71 @@ export default class GameBoard extends React.Component {
 
         this.state = {
             gameData: {},
-            showStatistics: false
+            showStatistics: false,
+            gameStat:
+            {
+                fullTime: "",
+                startTime: "00:01",
+                endTime: 0,
+                sec: 0,
+                min: 0,
+                stopTimer: false,
+                timeInterval: 0
+            }
         }
     }
 
     componentDidMount() {
         this.getCurrGameData();
+        this.gameTimer();
     }
+
+    gameTimer() {
+        const {gameStat} = this.state;
+        let handler = function () {
+            if (!gameStat.stopTimer) {
+                if (++gameStat.sec === 60) {
+                    gameStat.sec = 0;
+                    ++gameStat.min;
+                }
+                gameStat.fullTime = (gameStat.min < 10 ? "0" + gameStat.min : gameStat.min) + ":" + (gameStat.sec < 10 ? "0" + gameStat.sec : gameStat.sec);
+              //  setStateInBoardCB("timer", fullTime, fullTime === "00:02");
+            }
+            else {
+                clearInterval(timeInterval);
+            }
+        };
+
+        gameStat.timeInterval = setInterval(handler, 1000);
+        handler();
+
+        this.setState({gameStat});
+    }
+
+    // gameTimer() {
+    //     console.log("ENTER GAMETIMER!!!");
+    //     const {gameStat} = this.state;
+    //     gameStat.timeInterval = setInterval(function () { this.timeHandler() }, 1000);
+    //     this.setState({gameStat});  
+    // }
+    
+    // timeHandler() {
+    //     const {gameStat} = this.state;
+
+    //     if (!gameStat.stopTimer) {
+    //         if (++gameStat.sec === 60) {
+    //             gameStat.sec = 0;
+    //             ++gameStat.min;
+    //         }
+    //         gameStat.fullTime = (gameStat.min < 10 ? "0" + gameStat.min : gameStat.min) + ":" + (gameStat.sec < 10 ? "0" + gameStat.sec : gameStat.sec);
+    //     }
+    //     else {
+    //         clearInterval(gameStat.timeInterval);
+    //     }
+
+    //     this.setState({gameStat});
+    // }
+
 
     getCurrGameData() {
         const { gameId } = this.props;
@@ -90,7 +151,7 @@ export default class GameBoard extends React.Component {
     }
 
     render() {
-        const { gameData } = this.state;
+        const { gameData,gameStat } = this.state;
         const { user } = this.props;
         return (
             <div>
@@ -104,7 +165,7 @@ export default class GameBoard extends React.Component {
                                 {gameData.players.map((player, index) => (
                                     player &&
                                     (<div key={index}>
-                                        {player.name === user.name && this.state.showStatistics && <Statistics showStatistics={this.showStatistics} gameData={gameData} quitTheGame={this.quitTheGame}/>}
+                                        {player.name === user.name && this.state.showStatistics && <Statistics showStatistics={this.showStatistics} gameData={gameData} quitTheGame={this.quitTheGame} user={user} gameStat = {gameStat}/>}
                                         {(player.name === user.name && player.changeColorWindowIsOpen) && <div className="colorWindowContainer">
                                             <div className="colorWindow">
                                                 <button className="blue" onClick={() => this.colorChangedInWindow("blue")}></button>

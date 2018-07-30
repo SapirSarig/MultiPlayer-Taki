@@ -166,7 +166,7 @@ function createGame(currentGame) {
     currentGame.gameData.players = GameLogic.shareCardsToPlayers(currentGame.numOfRegisterd, currentGame.gameData);
     currentGame.gameData.cardOnTop = GameLogic.drawOpeningCard(currentGame.gameData);
     //console.log("gameTIMErss")
-    //GameLogic.gameTimer(currentGame.gameData);
+    GameLogic.gameTimer();
 }
 
 module.exports = gamesManagement;

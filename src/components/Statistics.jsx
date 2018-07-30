@@ -9,17 +9,17 @@ class Statistics extends Component {
 
     render() {
         let { numOfTurns, players, timer, avgTimeForTurn, avgTimeForTurnPerGame, numOfCardsInDeck } = this.props;
-        const { showStatistics, gameData, quitTheGame } = this.props;
+        const { showStatistics, gameData, quitTheGame, user,gameStat } = this.props;
         return (
             <div className="Statistics">
                 Statistics
-                <div>Time: {gameData.gameStat.fullTime} </div>
+                <div>Time: {gameStat.fullTime} </div>
                 <div>Cards in deck: {gameData.deck.length - gameData.takenCardsCounter} </div>
                 <div>Number of turns: {gameData.numOfTurns} </div>
 
 
                 {gameData.players.map((player, index) => (
-                    player && (
+                    user.name === player.name && (
                         <div key={index}>
                             <div> {player.name} had one card: {player.oneCardLeftCounter} </div>
                             <div> {player.name} avg of turns time: {player.avg} </div>
