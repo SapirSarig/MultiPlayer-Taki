@@ -6,11 +6,14 @@ import PlayerComponent from './PlayerComponent.jsx';
 import TableDeck from './TableDeck.jsx';
 import "../../src/style.css";
 import Statistics from "../components/Statistics.jsx";
+import ChatContainer from './chatContainer.jsx';
+import ConverssionArea from './converssionArea.jsx';
+import ChatInput from './chatInput.jsx';
 
 export default class GameBoard extends React.Component {
     constructor(props) {
         super(props);
-
+        //
         this.getCurrGameData = this.getCurrGameData.bind(this);
         this.checkStatusOnTableDeckClicked = this.checkStatusOnTableDeckClicked.bind(this);
         this.checkCard = this.checkCard.bind(this);
@@ -22,6 +25,7 @@ export default class GameBoard extends React.Component {
         this.gameTimer = this.gameTimer.bind(this);
         //this.timeHandler = this.timeHandler.bind(this);
         this.resizeCards = this.resizeCards.bind(this);
+        this.showChat = this.showChat.bind(this);
 
         this.gameToCheck = {
             gameId: props.gameId,
@@ -32,16 +36,17 @@ export default class GameBoard extends React.Component {
             cardMarginLeft: [0, 0, 0, 0],
             gameData: {},
             showStatistics: false,
+            isChatShown: false,
             gameStat:
-                {
-                    fullTime: "",
-                    startTime: "00:01",
-                    endTime: 0,
-                    sec: 0,
-                    min: 0,
-                    stopTimer: false,
-                    timeInterval: 0
-                }
+            {
+                fullTime: "",
+                startTime: "00:01",
+                endTime: 0,
+                sec: 0,
+                min: 0,
+                stopTimer: false,
+                timeInterval: 0
+            }
         }
     }
 
@@ -51,20 +56,22 @@ export default class GameBoard extends React.Component {
         this.resizeCards();
     }
 
-    resizeCards()
-    {   
+    resizeCards() {
         const { gameId } = this.props;
-        let {cardMarginLeft} = this.state;
+        let { cardMarginLeft } = this.state;
         return fetch(`/games/getCardMarginLeftByGameId/?id=${gameId}`, { method: 'GET', credentials: 'include' })
             .then((response) => {
                 if (!response.ok) {
                     throw response;
                 }
-                //this.timeoutId = setTimeout(this.resizeCards, 1000);
                 return response.json();
             })
             .then((cardMarginLeft) => cardMarginLeft && this.setState({ cardMarginLeft }))
             .catch(err => { throw err });
+    }
+
+    showChat(value) {
+        this.setState({ isChatShown: value });
     }
 
     gameTimer() {
@@ -145,7 +152,7 @@ export default class GameBoard extends React.Component {
     }
 
     render() {
-        const { gameData, gameStat, showStatistics, cardMarginLeft } = this.state;
+        const { gameData, gameStat, showStatistics, cardMarginLeft, isChatShown } = this.state;
         const { user } = this.props;
         let myPlayer = {};
         let allPlayersWithOutMe = [];
@@ -160,18 +167,18 @@ export default class GameBoard extends React.Component {
 
         return (
             <div>
-                {!gameData.gameOver ?
+                {!gameData.gameOver && !isChatShown ?
                     <div>
                         {gameData && gameData.players && myPlayer && allPlayersWithOutMe && (
                             <div>
-                                <TableDeck cardOnTop={gameData.cardOnTop} checkStatusOnTableDeckClicked={this.checkStatusOnTableDeckClicked} />
+                                <TableDeck cardOnTop={gameData.cardOnTop} checkStatusOnTableDeckClicked={this.checkStatusOnTableDeckClicked} showChat={this.showChat} />
                                 <div className="Statistics">
                                     {showStatistics ? <button className="btn" onClick={() => this.showStatistics(false)}>Hide Statistics</button> :
                                         <button className="btn" onClick={() => this.showStatistics(true)}>Show Statistics </button>}
                                     {myPlayer.name === user.name && showStatistics && <Statistics showStatistics={this.showStatistics} gameData={gameData} quitTheGame={this.quitTheGame} user={user} gameStat={gameStat} timer={timer} />}
                                 </div>
                                 <div className={`myPlayer`}>
-                                  {(myPlayer.name === user.name && !myPlayer.ImDoneIsHidden) && <button className="ImDoneButton" onClick={() => this.imDoneButtonClicked()}>I'm done</button>}
+                                    {(myPlayer.name === user.name && !myPlayer.ImDoneIsHidden) && <button className="ImDoneButton" onClick={() => this.imDoneButtonClicked()}>I'm done</button>}
                                     <PlayerComponent hidden={myPlayer.noCardsLeft} user={user} checkCard={this.checkCard} player={myPlayer} numberOfPlayer={gameData.numberOfPlayer} gameData={gameData} cardMarginLeft={cardMarginLeft[myPlayer.index]} />
                                 </div>
                                 {allPlayersWithOutMe.map((player, index) => (
@@ -198,7 +205,14 @@ export default class GameBoard extends React.Component {
                             </div>
                         )}
                     </div> :
-                    <Statistics showStatistics={this.showStatistics} quitTheGame={this.quitTheGame} gameData={gameData} user={user} gameStat={gameStat} timer={timer} />}
+                    (!gameData.gameOver && isChatShown ?
+                        (<div className="chat-base-container">
+                            <div className="chat-contaier">
+                                <ConverssionArea />
+                                <ChatInput />
+                                <button onClick={()=>this.showChat(false)}> quit chat </button>
+                            </div>
+                        </div>) : <Statistics showStatistics={this.showStatistics} quitTheGame={this.quitTheGame} gameData={gameData} user={user} gameStat={gameStat} timer={timer} />)}
             </div>
         );
     }
