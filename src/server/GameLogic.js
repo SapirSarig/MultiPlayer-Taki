@@ -1,6 +1,6 @@
 const cardColors = { 0: "blue", 1: "red", 2: "green", 3: "yellow" }
 const numOfColors = 4;
-const numOfCardsForEachPlayer = 8;
+const numOfCardsForEachPlayer =8;
 let setStateInBoardCB;
 let takenCardsCounter = 0;
 let turnIndex = 2;
@@ -959,43 +959,62 @@ function rotateArrow() {
     //console.log("rotating");
 }
 
-function resizeCards() {
+function resizeCards(currGame) {
     let cardWidth = 120;
     let cardSpace = 70;
-    let resizeArr = [0, 0];
-    let cardMarginLeft = [0, 0];
+    let resizeArr = [0, 0, 0, 0];
+    let cardMarginLeft = [0, 0, 0, 0];
 
-    for (let i = 0; i < 2; i++) {
-        if (gameStarted) {
-            checkSpacesBetweenCards(resizeArr, i);
+    for (let i = 0; i < currGame.numOfPlayers; i++) {
+        if (currGame.gameData.gameStarted) {
+            console.log("calling checkSpacesBetweenCards");
+            checkSpacesBetweenCards(currGame.gameData,resizeArr, i);
+        }
+        else
+        {
+            console.log("not calling checkSpacesBetweenCards");
         }
         cardMarginLeft[i] = -(cardWidth - cardSpace - resizeArr[i]);
     }
-    setStateInBoardCB('cardMarginLeft', cardMarginLeft, false);
+    return cardMarginLeft;
+    //setStateInBoardCB('cardMarginLeft', cardMarginLeft, false);
 }
 
-function checkSpacesBetweenCards(resizeArr, index) {
-    if (players[index].cards.length > 21) {
+function checkSpacesBetweenCards(gameData, resizeArr, index) {
+    console.log("@@@@@@@@@@    checkSpacesBetweenCards     @@@@@@@@@@@@@@");
+    console.log("IN RESIZE -> gameData.players[index] = " +  gameData.players[index].cards.length);
+    if (gameData.players[index].cards.length > 21) {
+        console.log("gameData.players[index].cards.length > 21");
         resizeArr[index] -= 40;
     }
-    else if (players[index].cards.length > 17) {
+    else if (gameData.players[index].cards.length > 17) {
+        console.log("gameData.players[index].cards.length > 17");
         resizeArr[index] -= 35;
     }
-    else if (players[index].cards.length > 14) {
+    else if (gameData.players[index].cards.length > 14) {
+        console.log("gameData.players[index].cards.length > 14");
         resizeArr[index] -= 30;
     }
-    else if (players[index].cards.length > 11) {
+    else if (gameData.players[index].cards.length > 11) {
+        console.log("gameData.players[index].cards.length > 11");
         resizeArr[index] -= 25;
     }
-    else if (players[index].cards.length > 8) {
+    else if (gameData.players[index].cards.length > 8) {
+        console.log("gameData.players[index].cards.length > 8");
+
         resizeArr[index] -= 12;
     }
-    else if (players[index].cards.length < 5) {
+    else if (gameData.players[index].cards.length < 5) {
+        console.log("gameData.plyers[index].cards.length > 5");
         resizeArr[index] += 25;
+    }
+    else
+    {
+        console.log("NO RESIZE HERE");
     }
 }
 
 module.exports = {
     createDeck, shareCardsToPlayers, drawOpeningCard,
-    checkStatusOnTableDeckClicked, checkCard, setColorToTopCard, imDoneButtonClicked, gameTimer
+    checkStatusOnTableDeckClicked, checkCard, setColorToTopCard, imDoneButtonClicked, gameTimer , resizeCards
 }

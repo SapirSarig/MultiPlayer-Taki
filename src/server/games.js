@@ -3,7 +3,6 @@ const router = express.Router();
 const auth = require('./auth');
 const GameLogic = require('./GameLogic.js');
 
-
 const gamesList = [];
 let gameId = 1;
 const gamesManagement = express.Router();
@@ -126,18 +125,6 @@ gamesManagement.post('/checkStatusOnTableDeckClicked', (req, res) => {
     res.sendStatus(200);
 });
 
-
-// gamesManagement.get('/startGameTimer', (req, res) => {
-//     console.log("-----------------------startGameTimer------------------------")
-//     const id = req.query.id;
-//     console.log("id = "+ id);
-//     const gameIndex = gamesList.findIndex(game => game.id === Number(id));
-//     console.log("gameIndex = "+ gameIndex);
-//     console.log("gamesList[gameIndex].gameData = "+ JSON.stringify(gamesList[gameIndex].gameData));
-//     GameLogic.gameTimer(gamesList[gameIndex].gameData);
-//     res.sendStatus(200);
-// });
-
 gamesManagement.post('/updateActivePlayers', (req, res) => {
     const bodyObj = JSON.parse(req.body);
     const gameIndex = gamesList.findIndex(game => game.id === Number(bodyObj.gameId));
@@ -148,6 +135,17 @@ gamesManagement.post('/updateActivePlayers', (req, res) => {
         gamesList[gameIndex].numOfRegisterd = 0;
     }
     res.sendStatus(200);
+});
+
+gamesManagement.get('/getCardMarginLeftByGameId', (req, res) => {
+    console.log("-------------    getCardMarginLeftByGameId   ----------------");
+    const id = req.query.id;
+    const currentGame = gamesList.find(game => game.id === Number(id));
+    console.log("-------------    BEFORE RESIZE   ----------------");
+    let CardMarginLeft = GameLogic.resizeCards(currentGame);
+    console.log("-------------    AFTER RESIZE   ----------------");
+    console.log("CardMarginLeft = "+CardMarginLeft);
+    res.json(CardMarginLeft);
 });
 
 function createGame(currentGame) {
@@ -166,7 +164,6 @@ function createGame(currentGame) {
     currentGame.gameData.deck = GameLogic.createDeck();
     currentGame.gameData.players = GameLogic.shareCardsToPlayers(currentGame.numOfRegisterd, currentGame.gameData);
     currentGame.gameData.cardOnTop = GameLogic.drawOpeningCard(currentGame.gameData);
-    //console.log("gameTIMErss")
 }
 
 module.exports = gamesManagement;

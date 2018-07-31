@@ -186,9 +186,13 @@
   }
 
   .myPlayer {
-    right: 25%;
+    left: 50%;
     bottom: 0;
     position: fixed;
+    -webkit-transform: translateX(-50%);
+    -o-transform: translateX(-50%);
+    -moz-transform: translateX(-50%);
+    transform: translateX(-50%);
   }
 
   .player1{ 

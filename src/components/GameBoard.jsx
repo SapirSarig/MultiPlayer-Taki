@@ -21,6 +21,7 @@ export default class GameBoard extends React.Component {
         this.quitTheGame = this.quitTheGame.bind(this);
         this.gameTimer = this.gameTimer.bind(this);
         //this.timeHandler = this.timeHandler.bind(this);
+        this.resizeCards = this.resizeCards.bind(this);
 
         this.gameToCheck = {
             gameId: props.gameId,
@@ -28,6 +29,7 @@ export default class GameBoard extends React.Component {
         }
 
         this.state = {
+            cardMarginLeft: [0, 0, 0, 0],
             gameData: {},
             showStatistics: false,
             gameStat:
@@ -46,6 +48,23 @@ export default class GameBoard extends React.Component {
     componentDidMount() {
         this.getCurrGameData();
         this.gameTimer();
+        this.resizeCards();
+    }
+
+    resizeCards()
+    {   
+        const { gameId } = this.props;
+        let {cardMarginLeft} = this.state;
+        return fetch(`/games/getCardMarginLeftByGameId/?id=${gameId}`, { method: 'GET', credentials: 'include' })
+            .then((response) => {
+                if (!response.ok) {
+                    throw response;
+                }
+                //this.timeoutId = setTimeout(this.resizeCards, 1000);
+                return response.json();
+            })
+            .then((cardMarginLeft) => cardMarginLeft && this.setState({ cardMarginLeft }))
+            .catch(err => { throw err });
     }
 
     gameTimer() {
@@ -70,31 +89,6 @@ export default class GameBoard extends React.Component {
         this.setState({ gameStat });
     }
 
-    // gameTimer() {
-    //     console.log("ENTER GAMETIMER!!!");
-    //     const {gameStat} = this.state;
-    //     gameStat.timeInterval = setInterval(function () { this.timeHandler() }, 1000);
-    //     this.setState({gameStat});  
-    // }
-
-    // timeHandler() {
-    //     const {gameStat} = this.state;
-
-    //     if (!gameStat.stopTimer) {
-    //         if (++gameStat.sec === 60) {
-    //             gameStat.sec = 0;
-    //             ++gameStat.min;
-    //         }
-    //         gameStat.fullTime = (gameStat.min < 10 ? "0" + gameStat.min : gameStat.min) + ":" + (gameStat.sec < 10 ? "0" + gameStat.sec : gameStat.sec);
-    //     }
-    //     else {
-    //         clearInterval(gameStat.timeInterval);
-    //     }
-
-    //     this.setState({gameStat});
-    // }
-
-
     getCurrGameData() {
         const { gameId } = this.props;
         return fetch(`/games/getGameDataById/?id=${gameId}`, { method: 'GET', credentials: 'include' })
@@ -107,7 +101,7 @@ export default class GameBoard extends React.Component {
             })
             .then((gameData) => gameData && this.setState({ gameData }))
             .catch(err => { throw err });
-    }
+    }//
 
     checkStatusOnTableDeckClicked() {
         fetch('/games/checkStatusOnTableDeckClicked', { method: 'POST', body: JSON.stringify(this.gameToCheck), credentials: 'include' });
@@ -119,6 +113,7 @@ export default class GameBoard extends React.Component {
             card: cardToCheck,
         }
         fetch('/games/checkCard', { method: 'POST', body: JSON.stringify(data), credentials: 'include' });
+        this.resizeCards();
     }
 
     colorChangedInWindow(color) {
@@ -150,7 +145,7 @@ export default class GameBoard extends React.Component {
     }
 
     render() {
-        const { gameData, gameStat, showStatistics } = this.state;
+        const { gameData, gameStat, showStatistics, cardMarginLeft } = this.state;
         const { user } = this.props;
         let myPlayer = {};
         let allPlayersWithOutMe = [];
@@ -177,12 +172,12 @@ export default class GameBoard extends React.Component {
                                 </div>
                                 <div className={`myPlayer`}>
                                   {(myPlayer.name === user.name && !myPlayer.ImDoneIsHidden) && <button className="ImDoneButton" onClick={() => this.imDoneButtonClicked()}>I'm done</button>}
-                                    <PlayerComponent hidden={myPlayer.noCardsLeft} user={user} checkCard={this.checkCard} player={myPlayer} numberOfPlayer={gameData.numberOfPlayer} gameData={gameData} /*cardMarginLeft={cardMarginLeft[1]}*/ />
+                                    <PlayerComponent hidden={myPlayer.noCardsLeft} user={user} checkCard={this.checkCard} player={myPlayer} numberOfPlayer={gameData.numberOfPlayer} gameData={gameData} cardMarginLeft={cardMarginLeft[myPlayer.index]} />
                                 </div>
                                 {allPlayersWithOutMe.map((player, index) => (
                                     player &&
                                     (<div key={index} className={`player${allPlayersWithOutMe.length === 1 ? index + 2 : index + 1}`}>
-                                        <PlayerComponent hidden={player.noCardsLeft} user={user} checkCard={this.checkCard} player={player} numberOfPlayer={gameData.numberOfPlayer} gameData={gameData} index={index} /*cardMarginLeft={cardMarginLeft[1]}*/ />
+                                        <PlayerComponent hidden={player.noCardsLeft} user={user} checkCard={this.checkCard} player={player} numberOfPlayer={gameData.numberOfPlayer} gameData={gameData} index={index} cardMarginLeft={cardMarginLeft[player.index]} />
                                     </div>)
                                 ))}
 
