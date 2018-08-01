@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const bodyParser = require('body-parser');
 const auth = require('./auth');
+const games = require('./games');
 
 const chatContent = [];
 
@@ -10,19 +11,25 @@ const chatManagement = express.Router();
 chatManagement.use(bodyParser.text());
 
 chatManagement.route('/')
-	.get(auth.userAuthentication, (req, res) => {		
-		res.json(chatContent);
+	.get(auth.userAuthentication, (req, res) => {	
+		const gameId = req.query.id;	
+		res.json(gamesManagement.getCurrGameChatContent(gameId));
 	})
 	.post(auth.userAuthentication, (req, res) => {		
         const body = req.body;
-        const userInfo =  auth.getUserInfo(req.session.id);
-        chatContent.push({user: userInfo, text: body});        
+		const userInfo =  auth.getUserInfo(req.session.id);
+		const newContent = {
+			user: userInfo,
+			text: body.text
+		}
+		gamesManagement.addContentToGamesChat(newContent,body.gameId);
+        //chatContent.push({user: userInfo, text: body.text});        
         res.sendStatus(200);
 	});
 
-chatManagement.appendUserLogoutMessage = function(userInfo) {
-	chatContent.push({user: userInfo, text: `user had logout`}); 
-}
+// chatManagement.appendUserLogoutMessage = function(userInfo) {
+// 	chatContent.push({user: userInfo, text: `user had logout`}); 
+// }
 
 
 module.exports = chatManagement;

@@ -28,7 +28,7 @@ export default class GameRoom extends React.Component {
 
     getCurrGameData() {
         const { user } = this.props;
-        console.log("getCurrGameData")
+        //console.log("getCurrGameData")
         return fetch(`/games/getGameById/?id=${user.usersGame.id}`, { method: 'GET', credentials: 'include' })
             .then((response) => {
                 if (!response.ok) {

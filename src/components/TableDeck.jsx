@@ -8,7 +8,7 @@ class TableDeck extends Component {
     }
 
     render() {
-        const { cardOnTop, checkStatusOnTableDeckClicked, showChat } = this.props;
+        const { cardOnTop, checkStatusOnTableDeckClicked, showChat, gameId } = this.props;
 
         return (
             <div className="tableDeck">

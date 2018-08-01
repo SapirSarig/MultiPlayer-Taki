@@ -18,6 +18,7 @@ export default class CreateNewGame extends React.Component {
                 gameData: {
                     playersName: [],
                     numOfActivePlayers:0,
+                    chatContent:[],
                     gameStat:
                     {
                         fullTime: "",

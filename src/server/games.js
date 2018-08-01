@@ -138,13 +138,13 @@ gamesManagement.post('/updateActivePlayers', (req, res) => {
 });
 
 gamesManagement.get('/getCardMarginLeftByGameId', (req, res) => {
-    console.log("-------------    getCardMarginLeftByGameId   ----------------");
+    //console.log("-------------    getCardMarginLeftByGameId   ----------------");
     const id = req.query.id;
     const currentGame = gamesList.find(game => game.id === Number(id));
-    console.log("-------------    BEFORE RESIZE   ----------------");
+    //console.log("-------------    BEFORE RESIZE   ----------------");
     let CardMarginLeft = GameLogic.resizeCards(currentGame);
-    console.log("-------------    AFTER RESIZE   ----------------");
-    console.log("CardMarginLeft = "+CardMarginLeft);
+    // console.log("-------------    AFTER RESIZE   ----------------");
+    // console.log("CardMarginLeft = " + CardMarginLeft);
     res.json(CardMarginLeft);
 });
 
@@ -165,5 +165,35 @@ function createGame(currentGame) {
     currentGame.gameData.players = GameLogic.shareCardsToPlayers(currentGame.numOfRegisterd, currentGame.gameData);
     currentGame.gameData.cardOnTop = GameLogic.drawOpeningCard(currentGame.gameData);
 }
+gamesManagement.get('/getChat', auth.userAuthentication, (req, res) => {
+    const gameId = req.query.id;
+    res.json(getCurrGameChatContent(gameId));
+});
 
-module.exports = gamesManagement;
+gamesManagement.post('/setInputInChat', auth.userAuthentication, (req, res) => {
+    const bodyObj = JSON.parse(req.body);
+    console.log("body.gameId = "+ bodyObj.gameId);
+    const userInfo = auth.getUserInfo(req.session.id);
+    const newContent = {
+        user: userInfo,
+        text: bodyObj.text
+    }
+    addContentToGamesChat(newContent, bodyObj.gameId);
+    res.sendStatus(200);
+});
+
+function addContentToGamesChat(newContent, gameId) {
+    console.log("gameID = " + gameId);
+    const gameIndex = gamesList.findIndex(game => game.id === Number(gameId));
+    console.log("gameIndex = " + gameIndex);
+    console.log("newContent = " + newContent);
+
+    gamesList[gameIndex].gameData.chatContent.push(newContent);
+}
+
+function getCurrGameChatContent(gameId) {
+    const gameIndex = gamesList.findIndex(game => game.id === Number(gameId));
+    return gamesList[gameIndex].gameData.chatContent;
+}
+
+module.exports = gamesManagement

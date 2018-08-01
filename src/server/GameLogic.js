@@ -252,13 +252,6 @@ function addCardToPlayersArr(arrToAddTheCard, gameData) {
     gameData.deck[cardIndex].taken = true;
     addTakenCardCounter(gameData);
     arrToAddTheCard.push(gameData.deck[cardIndex]);
-    // if (gameData.turnIndex === gameData.players[0].index) {
-    //     setTimeout(() => setStateInBoardCB('players', gameData.players, false), 2000);
-    // }
-    // else {
-    //     setStateInBoardCB('players', players, false);
-    // }
-    //resizeCards();
     if (gameData.gameStarted) {
         //console.log("@@@@Before changing turn!@@@");
         //takingCard.play();
@@ -316,7 +309,7 @@ function checkCard(card, playerName, gameData) {
             }
             else {
                 if (plus2 > 0) {
-                    //alert(`you have to take ${plus2} cards from deck!`);
+                    ///alert(`you have to take ${plus2} cards from deck!`);
                 }
                 else {
                     //alert("wrong!");
@@ -474,7 +467,7 @@ function newTimeOut(player, deck, numOfPlayers, arrOfSameCards, takiTime) {
 }
 
 function gameTimer(gameData) {
-    console.log("ENTER GAMETIMER!!!");
+    //console.log("ENTER GAMETIMER!!!");
     timeHandler();
     timeInterval = setInterval(function () { timeHandler() }, 1000);
 }
@@ -487,7 +480,7 @@ function timeHandler(gameStat) {
             ++min;
         }
         fullTime = (min < 10 ? "0" + min : min) + ":" + (sec < 10 ? "0" + sec : sec);
-        console.log("server timer: " + fullTime);
+        //console.log("server timer: " + fullTime);
     }
     else {
         clearInterval(timeInterval);
@@ -499,10 +492,10 @@ function timeHandler(gameStat) {
 
 function getCurrTime()
 {
-    console.log("***********getCurrTime*************");
-    console.log("fullTime = " + fullTime);
+    //console.log("***********getCurrTime*************");
+    //console.log("fullTime = " + fullTime);
     const startTimer = fullTime;
-    console.log("startTimer = " + startTimer);
+    //console.log("startTimer = " + startTimer);
     return startTimer;
 }
 
@@ -530,52 +523,6 @@ function changeTurn(number, gameData) {
     console.log("turnIndex after changing turn" + gameData.turnIndex);
     gameData.numOfTurns++;
 }
-
-
-// function changeTurn(number, numOfPlayers, gameData) {
-//     console.log("**** change TURN ******")
-//     endTime = fullTime;
-//     if (gameData.openTaki) {
-//         rivalPlay(gameData.deck, numOfPlayers);
-//     }
-//     else {
-//         console.log("turnIndex Before CHANGING : " + gameData.turnIndex);
-//         if (gameData.turnIndex === gameData.players[1].index) {
-//             //setTurnTime(endTime);
-//             //this.rotateArrow();
-//         }
-//         if (number === numOfPlayers) {
-//             if (gameData.cardOnTop.value === "stop") {
-//                 gameData.numOfTurns += number;
-//             }
-//             else {
-//                 gameData.numOfTurns++;
-//             }
-//         }
-//         else {
-//             //this.rotateArrow();
-//             gameData.numOfTurns += number;
-
-//         }
-//         //this.rotateArrow();
-//         //console.log("before chnging turn: " + turnIndex);
-//         let saveTurnIndex = gameData.turnIndex;
-//         gameData.turnIndex = ((gameData.turnIndex - 1) + number) % numOfPlayers + 1;
-//         // setStateInBoardCB('turnIndex', turnIndex);
-//         // setStateInBoardCB('numOfTurns', numOfTurns, false);
-//         if (saveTurnIndex !== gameData.turnIndex) {
-//             //rotateArrow();
-//         }
-//         //console.log("after chnging turn: " + turnIndex);
-//         startTime = fullTime;
-
-//         if (gameData.turnIndex !== numOfPlayers) {
-//             //console.log("rivals turn");
-//             //this.rivalPlay(deck, numOfPlayers)
-//             //setTimeout(() => { this.rivalPlay(deck, numOfPlayers) }, 2000);
-//         }
-//     }
-// }
 
 
 function setTurnTime(gameData) {
@@ -967,12 +914,12 @@ function resizeCards(currGame) {
 
     for (let i = 0; i < currGame.numOfPlayers; i++) {
         if (currGame.gameData.gameStarted) {
-            console.log("calling checkSpacesBetweenCards");
+            //console.log("calling checkSpacesBetweenCards");
             checkSpacesBetweenCards(currGame.gameData,resizeArr, i);
         }
         else
         {
-            console.log("not calling checkSpacesBetweenCards");
+            //console.log("not calling checkSpacesBetweenCards");
         }
         cardMarginLeft[i] = -(cardWidth - cardSpace - resizeArr[i]);
     }
@@ -981,36 +928,36 @@ function resizeCards(currGame) {
 }
 
 function checkSpacesBetweenCards(gameData, resizeArr, index) {
-    console.log("@@@@@@@@@@    checkSpacesBetweenCards     @@@@@@@@@@@@@@");
-    console.log("IN RESIZE -> gameData.players[index] = " +  gameData.players[index].cards.length);
+    //console.log("@@@@@@@@@@    checkSpacesBetweenCards     @@@@@@@@@@@@@@");
+    //console.log("IN RESIZE -> gameData.players[index] = " +  gameData.players[index].cards.length);
     if (gameData.players[index].cards.length > 21) {
-        console.log("gameData.players[index].cards.length > 21");
+        //console.log("gameData.players[index].cards.length > 21");
         resizeArr[index] -= 40;
     }
     else if (gameData.players[index].cards.length > 17) {
-        console.log("gameData.players[index].cards.length > 17");
+        //console.log("gameData.players[index].cards.length > 17");
         resizeArr[index] -= 35;
     }
     else if (gameData.players[index].cards.length > 14) {
-        console.log("gameData.players[index].cards.length > 14");
+        //console.log("gameData.players[index].cards.length > 14");
         resizeArr[index] -= 30;
     }
     else if (gameData.players[index].cards.length > 11) {
-        console.log("gameData.players[index].cards.length > 11");
+        //console.log("gameData.players[index].cards.length > 11");
         resizeArr[index] -= 25;
     }
     else if (gameData.players[index].cards.length > 8) {
-        console.log("gameData.players[index].cards.length > 8");
+        //console.log("gameData.players[index].cards.length > 8");
 
         resizeArr[index] -= 12;
     }
     else if (gameData.players[index].cards.length < 5) {
-        console.log("gameData.plyers[index].cards.length > 5");
+        //console.log("gameData.plyers[index].cards.length > 5");
         resizeArr[index] += 25;
     }
     else
     {
-        console.log("NO RESIZE HERE");
+        ////console.log("NO RESIZE HERE");
     }
 }
 

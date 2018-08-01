@@ -152,8 +152,8 @@ export default class GameBoard extends React.Component {
     }
 
     render() {
-        const { gameData, gameStat, showStatistics, cardMarginLeft, isChatShown } = this.state;
-        const { user } = this.props;
+        const { gameData, gameStat, showStatistics, cardMarginLeft, isChatShown} = this.state;
+        const { user ,gameId } = this.props;
         let myPlayer = {};
         let allPlayersWithOutMe = [];
         if (gameData.players) {
@@ -171,7 +171,7 @@ export default class GameBoard extends React.Component {
                     <div>
                         {gameData && gameData.players && myPlayer && allPlayersWithOutMe && (
                             <div>
-                                <TableDeck cardOnTop={gameData.cardOnTop} checkStatusOnTableDeckClicked={this.checkStatusOnTableDeckClicked} showChat={this.showChat} />
+                                <TableDeck cardOnTop={gameData.cardOnTop} checkStatusOnTableDeckClicked={this.checkStatusOnTableDeckClicked} showChat={this.showChat} gameId={gameId} />
                                 <div className="Statistics">
                                     {showStatistics ? <button className="btn" onClick={() => this.showStatistics(false)}>Hide Statistics</button> :
                                         <button className="btn" onClick={() => this.showStatistics(true)}>Show Statistics </button>}
@@ -208,8 +208,8 @@ export default class GameBoard extends React.Component {
                     (!gameData.gameOver && isChatShown ?
                         (<div className="chat-base-container">
                             <div className="chat-contaier">
-                                <ConverssionArea />
-                                <ChatInput />
+                                <ConverssionArea gameId = {gameId}/>
+                                <ChatInput gameId = {gameId}/>
                                 <button onClick={()=>this.showChat(false)}> quit chat </button>
                             </div>
                         </div>) : <Statistics showStatistics={this.showStatistics} quitTheGame={this.quitTheGame} gameData={gameData} user={user} gameStat={gameStat} timer={timer} />)}

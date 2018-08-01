@@ -20,14 +20,20 @@ export default class ChatInput extends React.Component {
             </form>
         )
     }   
-
+//
     sendText(e) {
+        console.log("^^^^^^^^^^^^^^^^^  SNED TEXT ^^^^^^^^^^^^^^^^^^^^^")
         e.preventDefault();
         this.setState(()=>({sendInProgress: true}));
-        const text = this.inputElement.value;
-        fetch('/chat', {
+        const inputText = this.inputElement.value;
+        const input = {
+            text: inputText,
+            gameId: this.props.gameId
+        }
+
+        fetch('/games/setInputInChat', {
             method: 'POST',
-            body: text,
+            body: JSON.stringify(input),
             credentials: 'include'
         })
         .then(response => {            

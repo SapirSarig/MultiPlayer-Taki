@@ -56,10 +56,6 @@ function addGameToAuthList(req, res, next) {
 		res.status(403).send('game name already exists');
 		return;
 	}
-
-	//console.log('body' ,req.body);
-	//gamesList.push(req.body);
-
 	next();
 }
 
