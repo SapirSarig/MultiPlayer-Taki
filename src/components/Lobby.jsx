@@ -40,7 +40,7 @@ export default class Lobby extends React.Component {
                 <div className="createNewGame" hidden={hideCreateNewGameForm}>
                     <CreateNewGame changeHiddenProperty={this.changeHiddenProperty}  />
                 </div>
-            </div>
+            </div> 
         );
     }
 }

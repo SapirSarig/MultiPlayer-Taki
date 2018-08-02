@@ -205,7 +205,7 @@
     position: absolute;
     justify-content: center;
     transform: rotate(270deg);
-    right: -170px;
+    right: -140px;
     top: 30%;
   }
 
@@ -224,7 +224,7 @@
     justify-content: center;
     transform: rotate(90deg);
     position: absolute;
-    left: -170px;
+    left: -140px;
     top: 39%;
   }
 
@@ -234,7 +234,6 @@
     right: 60%;
     top: 35%;
   }
-
 
 /* ------------------------------------------------------------------------ */
 
@@ -263,8 +262,46 @@
         left: -115px;
         top: 39%;
       }
+      
+      .Statistics{
+    font-size: 15px;  
+    }
   }
   
+  @media (max-height: 630px) , (max-width: 650px){
+    .card {
+        height: 140px;
+        width: 100px;
+        margin: 0 auto;
+        display: inline-block;
+        transition: all .3s ease-in-out;  
+        position: relative;
+      }
+  
+      .player1 { 
+          position: absolute;
+          justify-content: center;
+          transform: rotate(270deg);
+          right: -115px;
+          top: 30%;
+        }
+  
+        .player3 {
+          justify-content: center;
+          transform: rotate(90deg);
+          position: absolute;
+          left: -115px;
+          top: 39%;
+        }
+        
+        .Statistics{
+            right: 68%;
+            top: 40%;
+         font-size: 12px;  
+      }
+}
+
+
   @media all and (max-height: 500px) , all and (max-width: 530px){
     .card {
       height: 100px;
@@ -290,6 +327,12 @@
         left: -95px;
         top: 39%;
       }
+
+      .Statistics{
+        font-size: 11px;
+        right: 60%;
+        top: 41%;
+        }
   } 
   
   @media all and (max-height: 300px) , all and (max-width:520px){

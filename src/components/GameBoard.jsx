@@ -180,9 +180,7 @@ export default class GameBoard extends React.Component {
                                     </div>)
                                 ))}
                                 <div className="Statistics">
-                                    {showStatistics ? <button className="btn" onClick={() => this.showStatistics(false)}>Hide Statistics</button> :
-                                        <button className="btn" onClick={() => this.showStatistics(true)}>Show Statistics </button>}
-                                    {myPlayer.name === user.name && showStatistics && <Statistics showStatistics={this.showStatistics} gameData={gameData} quitTheGame={this.quitTheGame} user={user} gameStat={gameStat} timer={timer} />}
+                                    {myPlayer.name === user.name && <Statistics showStatistics={this.showStatistics} gameData={gameData} quitTheGame={this.quitTheGame} user={user} gameStat={gameStat} timer={timer} />}
                                 </div>
                                 <TableDeck cardOnTop={gameData.cardOnTop} checkStatusOnTableDeckClicked={this.checkStatusOnTableDeckClicked} showChat={this.showChat} gameId={gameId} />
                                 <div className={`myPlayer`}>
