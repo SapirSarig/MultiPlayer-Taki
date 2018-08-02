@@ -34,7 +34,7 @@ export default class Lobby extends React.Component {
             <div className="lobby">
                 <div className="mainLobby" hidden={!hideCreateNewGameForm}>
                     <LoggedInUsersList />
-                    <button onClick={()=>this.changeHiddenProperty()}> Create Game </button>
+                    <button className="btn" onClick={()=>this.changeHiddenProperty()}> Create Game </button>
                     <GamesList userName = {userName} updateUserInGame = {updateUserInGame}/>
                 </div>
                 <div className="createNewGame" hidden={hideCreateNewGameForm}>

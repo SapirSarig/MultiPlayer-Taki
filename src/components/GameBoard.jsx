@@ -38,15 +38,15 @@ export default class GameBoard extends React.Component {
             showStatistics: false,
             isChatShown: false,
             gameStat:
-            {
-                fullTime: "",
-                startTime: "00:01",
-                endTime: 0,
-                sec: 0,
-                min: 0,
-                stopTimer: false,
-                timeInterval: 0
-            }
+                {
+                    fullTime: "",
+                    startTime: "00:01",
+                    endTime: 0,
+                    sec: 0,
+                    min: 0,
+                    stopTimer: false,
+                    timeInterval: 0
+                }
         }
     }
 
@@ -152,8 +152,8 @@ export default class GameBoard extends React.Component {
     }
 
     render() {
-        const { gameData, gameStat, showStatistics, cardMarginLeft, isChatShown} = this.state;
-        const { user ,gameId } = this.props;
+        const { gameData, gameStat, showStatistics, cardMarginLeft, isChatShown } = this.state;
+        const { user, gameId } = this.props;
         let myPlayer = {};
         let allPlayersWithOutMe = [];
         if (gameData.players) {
@@ -171,23 +171,24 @@ export default class GameBoard extends React.Component {
                     <div>
                         {gameData && gameData.players && myPlayer && allPlayersWithOutMe && (
                             <div>
-                                <TableDeck cardOnTop={gameData.cardOnTop} checkStatusOnTableDeckClicked={this.checkStatusOnTableDeckClicked} showChat={this.showChat} gameId={gameId} />
-                                <div className="Statistics">
-                                    {showStatistics ? <button className="btn" onClick={() => this.showStatistics(false)}>Hide Statistics</button> :
-                                        <button className="btn" onClick={() => this.showStatistics(true)}>Show Statistics </button>}
-                                    {myPlayer.name === user.name && showStatistics && <Statistics showStatistics={this.showStatistics} gameData={gameData} quitTheGame={this.quitTheGame} user={user} gameStat={gameStat} timer={timer} />}
-                                </div>
-                                <div className={`myPlayer`}>
-                                    {(myPlayer.name === user.name && !myPlayer.ImDoneIsHidden) && <button className="ImDoneButton" onClick={() => this.imDoneButtonClicked()}>I'm done</button>}
-                                    <PlayerComponent hidden={myPlayer.noCardsLeft} user={user} checkCard={this.checkCard} player={myPlayer} numberOfPlayer={gameData.numberOfPlayer} gameData={gameData} cardMarginLeft={cardMarginLeft[myPlayer.index]} />
-                                </div>
+
+
                                 {allPlayersWithOutMe.map((player, index) => (
                                     player &&
                                     (<div key={index} className={`player${allPlayersWithOutMe.length === 1 ? index + 2 : index + 1}`}>
                                         <PlayerComponent hidden={player.noCardsLeft} user={user} checkCard={this.checkCard} player={player} numberOfPlayer={gameData.numberOfPlayer} gameData={gameData} index={index} cardMarginLeft={cardMarginLeft[player.index]} />
                                     </div>)
                                 ))}
-
+                                <div className="Statistics">
+                                    {showStatistics ? <button className="btn" onClick={() => this.showStatistics(false)}>Hide Statistics</button> :
+                                        <button className="btn" onClick={() => this.showStatistics(true)}>Show Statistics </button>}
+                                    {myPlayer.name === user.name && showStatistics && <Statistics showStatistics={this.showStatistics} gameData={gameData} quitTheGame={this.quitTheGame} user={user} gameStat={gameStat} timer={timer} />}
+                                </div>
+                                <TableDeck cardOnTop={gameData.cardOnTop} checkStatusOnTableDeckClicked={this.checkStatusOnTableDeckClicked} showChat={this.showChat} gameId={gameId} />
+                                <div className={`myPlayer`}>
+                                    {(myPlayer.name === user.name && !myPlayer.ImDoneIsHidden) && <button className="btn" onClick={() => this.imDoneButtonClicked()}>I'm done</button>}
+                                    <PlayerComponent hidden={myPlayer.noCardsLeft} user={user} checkCard={this.checkCard} player={myPlayer} numberOfPlayer={gameData.numberOfPlayer} gameData={gameData} cardMarginLeft={cardMarginLeft[myPlayer.index]} />
+                                </div>
                                 {(myPlayer.name === user.name && myPlayer.changeColorWindowIsOpen) && <div className="colorWindowContainer">
                                     <div className="colorWindow">
                                         <button className="blue" onClick={() => this.colorChangedInWindow("blue")}></button>
@@ -208,9 +209,9 @@ export default class GameBoard extends React.Component {
                     (!gameData.gameOver && isChatShown ?
                         (<div className="chat-base-container">
                             <div className="chat-contaier">
-                                <ConverssionArea gameId = {gameId}/>
-                                <ChatInput gameId = {gameId}/>
-                                <button onClick={()=>this.showChat(false)}> quit chat </button>
+                                <ConverssionArea gameId={gameId} />
+                                <ChatInput gameId={gameId} />
+                                <button onClick={() => this.showChat(false)}> quit chat </button>
                             </div>
                         </div>) : <Statistics showStatistics={this.showStatistics} quitTheGame={this.quitTheGame} gameData={gameData} user={user} gameStat={gameStat} timer={timer} />)}
             </div>

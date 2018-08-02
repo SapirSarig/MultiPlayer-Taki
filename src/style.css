@@ -1,3 +1,7 @@
+#root{
+    color: white;
+}
+
 .btn , .chatBtn {
     font-size: 16px;
     padding-left: 8px;
@@ -175,7 +179,8 @@
       background-color: green;
   }
 
-  .text, .user-info-area, .username-label, .userList, .CreateNewGame-wrapper, .WaitingScreen {
+  .text, .user-info-area, .username-label, .userList, 
+  .CreateNewGame-wrapper, .WaitingScreen, {
       color:white;
   }
 
@@ -193,34 +198,111 @@
     -o-transform: translateX(-50%);
     -moz-transform: translateX(-50%);
     transform: translateX(-50%);
+    text-align: center;
   }
 
-  .player1{ 
+  .player1 { 
     position: absolute;
     justify-content: center;
     transform: rotate(270deg);
-    right: 41px;
-    top: 36%;
+    right: -170px;
+    top: 30%;
   }
 
-  .player2{
+  .player2 {
     position: absolute;
     top: 0;
-    right: 25%;
+    left: 50%;
     transform: rotate(180deg);
+    -webkit-transform: translateX(-50%);
+    -o-transform: translateX(-50%);
+    -moz-transform: translateX(-50%);
+    transform: translateX(-50%);
   }
 
-  .player3{
+  .player3 {
     justify-content: center;
     transform: rotate(90deg);
     position: absolute;
-    left: 41px;
-    top: 36%;
+    left: -170px;
+    top: 39%;
   }
 
   .Statistics{
     color: white;
     position: absolute;
-    right: 0;
-    bottom: 0;
+    right: 60%;
+    top: 35%;
   }
+
+
+/* ------------------------------------------------------------------------ */
+
+@media all and (max-height: 610px) , all and (max-width: 700px){
+    .card {
+      height: 140px;
+      width: 100px;
+      margin: 0 auto;
+      display: inline-block;
+      transition: all .3s ease-in-out;  
+      position: relative;
+    }
+
+    .player1 { 
+        position: absolute;
+        justify-content: center;
+        transform: rotate(270deg);
+        right: -115px;
+        top: 30%;
+      }
+
+      .player3 {
+        justify-content: center;
+        transform: rotate(90deg);
+        position: absolute;
+        left: -115px;
+        top: 39%;
+      }
+  }
+  
+  @media all and (max-height: 500px) , all and (max-width: 530px){
+    .card {
+      height: 100px;
+      width: 90px;
+      margin: 0 auto;
+      display: inline-block;
+      transition: all .3s ease-in-out;  
+      position: relative;
+    }
+
+    .player1 { 
+        position: absolute;
+        justify-content: center;
+        transform: rotate(270deg);
+        right: -95px;
+        top: 30%;
+      }
+
+    .player3 {
+        justify-content: center;
+        transform: rotate(90deg);
+        position: absolute;
+        left: -95px;
+        top: 39%;
+      }
+  } 
+  
+  @media all and (max-height: 300px) , all and (max-width:520px){
+    .takiLogo{
+      width: 300px;
+      height: 100px
+    }
+  }
+  
+  @media all and (max-height: 300px) , all and (max-width:520px){
+    .takiLogo{
+      width: 300px;
+      height: 100px
+    }
+  }
+  

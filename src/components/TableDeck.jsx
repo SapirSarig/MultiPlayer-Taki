@@ -13,7 +13,7 @@ class TableDeck extends Component {
         return (
             <div className="tableDeck">
                 <div className="tableDeckCardsContainer">
-                    <div><button className = "chatBtn" onClick={()=>showChat(true)}> open game's chat </button></div>
+                    <div><button className = "chatBtn" onClick={()=>showChat(true)}> Open chat </button></div>
                     <CardComponent className="card" card={cardOnTop} isOpenCard={false} isInDeck={true} checkStatusOnTableDeckClicked={checkStatusOnTableDeckClicked} />
                     <CardComponent className="card" card={cardOnTop} isOpenCard={true} isInDeck={true} checkStatusOnTableDeckClicked={checkStatusOnTableDeckClicked} />
                 </div>

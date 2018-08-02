@@ -61,8 +61,8 @@ export default class GameInList extends React.Component {
                     <div className ="text">
                         Game's Status: {currGame.Active ? "Game Started" : "Game didn't start"}
                     </div>
-                    <button className="joinGameBtn" hidden={currGame.Active} onClick={() => this.updateCurrGame(currGame)}>Join Game</button>
-                    <button hidden={!(userCanRemove && noOneRegisterd)} className="RemoveGame" onClick={() => this.removeCurrGame(currGame)}> Remove Game </button>
+                    <button className="btn" hidden={currGame.Active} onClick={() => this.updateCurrGame(currGame)}>Join Game</button>
+                    <button className="btn" hidden={!(userCanRemove && noOneRegisterd)} onClick={() => this.removeCurrGame(currGame)}> Remove Game </button>
                 </div>
             </div>
         );

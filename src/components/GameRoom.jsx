@@ -56,9 +56,9 @@ export default class GameRoom extends React.Component {
             <div>
                 {!isGameActive ?
                     (<div className="GameContainer">
-                        <div className="WaitingScreen" >
+                        <div className="WaitingScreen"> 
                             <div> There are {currGame.numOfRegisterd} players in the game <br />waiting for {currGame.numOfPlayers - currGame.numOfRegisterd} players to join </div>
-                            <button onClick={() => this.updateUserQuitGame()}>
+                            <button className="btn" onClick={() => this.updateUserQuitGame()}>
                                 Quit Game</button>
                         </div>
                     </div>) :
