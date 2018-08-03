@@ -335,6 +335,15 @@
         }
   } 
   
+  @media all and (max-width:440px){
+    .Statistics{
+        font-size: 9px;
+        right: 78%;
+        top: 41%;
+        }
+  }
+
+
   @media all and (max-height: 300px) , all and (max-width:520px){
     .takiLogo{
       width: 300px;
