@@ -343,15 +343,6 @@ function removeAndSetTopCard(player, card, gameData) {
     if (player.cards.length === 1) {
         player.oneCardLeftCounter++;
     }
-    //setStateInBoardCB('players', players, false);
-    //this.printPlayersCards();
-}
-
-function printPlayersCards() {
-    for (let i = 0; i < 2; i++) {
-        for (let key in players[i].cards) {
-        }
-    }
 }
 
 function removeCardFromPlayersArr(player, card) {
@@ -582,8 +573,6 @@ function drawOpeningCard(gameData) {
     gameData.cardOnTop = gameData.deck[CardIndex];
     gameData.gameStarted = true;
 
-    //this.printPlayersCards();
-    //setStateInBoardCB('cardOnTop',cardOnTop);
     return gameData.deck[CardIndex];
 }
 
