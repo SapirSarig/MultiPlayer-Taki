@@ -12,6 +12,7 @@ class Statistics extends Component {
         const showStatisticBtn = true;
         return (
             <div>
+                
                 Statistics
                 <div>Time: {timer} </div>
                 <div>Cards in deck: {gameData.deck.length - gameData.takenCardsCounter} </div>

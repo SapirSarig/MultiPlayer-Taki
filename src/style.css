@@ -232,7 +232,7 @@
     color: white;
     position: absolute;
     right: 60%;
-    top: 35%;
+    top: 44%;
   }
 
 /* ------------------------------------------------------------------------ */
@@ -295,8 +295,8 @@
         }
         
         .Statistics{
-            right: 68%;
-            top: 40%;
+            right: 60%;
+            top: 45%;
          font-size: 12px;  
       }
 }
