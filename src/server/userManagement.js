@@ -20,16 +20,11 @@ userManagement.post('/addUser', auth.addUserToAuthList, (req, res) => {
 	res.sendStatus(200);	
 });
 
-userManagement.get('/logout', [
-	(req, res, next) => {	
-		const userinfo = auth.getUserInfo(req.session.id);	
-		chatManagement.appendUserLogoutMessage(userinfo);
-		next();
-	}, 
+userManagement.get('/logout', 
 	auth.removeUserFromAuthList, 
 	(req, res) => {
 		res.sendStatus(200);		
-	}]
+	}
 );
 
 module.exports = userManagement;

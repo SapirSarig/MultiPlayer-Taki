@@ -253,10 +253,6 @@ function addCardToPlayersArr(arrToAddTheCard, gameData) {
     addTakenCardCounter(gameData);
     arrToAddTheCard.push(gameData.deck[cardIndex]);
     if (gameData.gameStarted) {
-        //console.log("@@@@Before changing turn!@@@");
-        //takingCard.play();
-        //console.log("player 1: " + players[0].cards);
-        //console.log("player 2: " + players[1].cards);
         if (gameData.plus2 > 0) {
             gameData.plus2--;
         }
@@ -287,23 +283,16 @@ function setTournament() {
 
 function checkCard(card, playerName, gameData) {
     let isPlayerTurn = checkPlayerTurn(playerName, gameData);
-    //console.log("is player turn: " + isPlayerTurn);
 
     if (isPlayerTurn) {
         if (gameData.openTaki) {
             if (checkValidCard(card, gameData)) {
-                //console.log("gameData.players[turnIndex] = " + gameData.players[gameData.turnIndex]);
                 removeAndSetTopCard(gameData.players[gameData.turnIndex], card, gameData);
-            }
-            else {
-                //console.log("open taki - card is not valid");
-                //wrongSound.play();
             }
         }
         else {
             if (checkValidCard(card, gameData)) {
                 let cardOnTopColor = gameData.cardOnTop.color;
-                //console.log("gameData.players[turnIndex] = " + gameData.players[gameData.turnIndex]);
                 removeAndSetTopCard(gameData.players[gameData.turnIndex], card, gameData);
                 isSpecialCard(gameData.players[gameData.turnIndex], gameData, cardOnTopColor);
             }
@@ -322,7 +311,6 @@ function checkCard(card, playerName, gameData) {
         //alert("wrong!");
         //wrongSound.play();
     }
-    // console.log("changeColorWindowIsOpen: " + result.changeColorWindowIsOpen +
     //     " ImDoneIsHidden:" + result.ImDoneIsHidden);
 }
 
@@ -350,7 +338,6 @@ function checkValidCard(card, gameData) {
 }
 
 function removeAndSetTopCard(player, card, gameData) {
-    //console.log("player data: " + player);
     removeCardFromPlayersArr(player, card);
     setNewcardOnTop(card, gameData);
     if (player.cards.length === 1) {
@@ -362,15 +349,12 @@ function removeAndSetTopCard(player, card, gameData) {
 
 function printPlayersCards() {
     for (let i = 0; i < 2; i++) {
-        console.log("cards of player " + (i + 1) + ":");
         for (let key in players[i].cards) {
-            console.log(players[i].cards[key])
         }
     }
 }
 
 function removeCardFromPlayersArr(player, card) {
-    //console.log("player data: " + player);
     for (let key in player.cards) {
         if (player.cards[key].cardId === card.cardId) {
             player.cards.splice(player.cards.indexOf(player.cards[key]), 1);
@@ -432,7 +416,6 @@ function isSpecialCard(player, gameData, cardOnTopColor) {
         }
     }
     else if (gameData.cardOnTop.value === "plus") {
-        console.log("player put plus card! ");
         //add 1 turn to statistics
         changeTurn(gameData.numOfPlayers, gameData);
     }
@@ -467,7 +450,6 @@ function newTimeOut(player, deck, numOfPlayers, arrOfSameCards, takiTime) {
 }
 
 function gameTimer(gameData) {
-    //console.log("ENTER GAMETIMER!!!");
     timeHandler();
     timeInterval = setInterval(function () { timeHandler() }, 1000);
 }
@@ -480,7 +462,6 @@ function timeHandler(gameStat) {
             ++min;
         }
         fullTime = (min < 10 ? "0" + min : min) + ":" + (sec < 10 ? "0" + sec : sec);
-        //console.log("server timer: " + fullTime);
     }
     else {
         clearInterval(timeInterval);
@@ -492,10 +473,7 @@ function timeHandler(gameStat) {
 
 function getCurrTime()
 {
-    //console.log("***********getCurrTime*************");
-    //console.log("fullTime = " + fullTime);
     const startTimer = fullTime;
-    //console.log("startTimer = " + startTimer);
     return startTimer;
 }
 
@@ -506,13 +484,9 @@ function findAvgOfTurnTime(gameData) {
     }
     let avgNum = Number(sum / gameData.players[gameData.turnIndex].turnTime.length);
     gameData.players[gameData.turnIndex].avg = Number(avgNum.toFixed(2));
-    console.log("AVG: " + gameData.players[gameData.turnIndex].avg);
 }
 
 function changeTurn(number, gameData) {
-    console.log("**** change TURN ******");
-    console.log("turnIndex before changing turn" + gameData.turnIndex);
-    //console.log("numofplayers " + gameData.numOfPlayers);
     gameData.players[gameData.turnIndex].endTime = fullTime;
     setTurnTime(gameData);
     gameData.turnIndex = (gameData.turnIndex + number) % gameData.numOfPlayers;
@@ -520,14 +494,11 @@ function changeTurn(number, gameData) {
         gameData.turnIndex = (gameData.turnIndex + 1) % gameData.numOfPlayers;
     }
     gameData.players[gameData.turnIndex].startTime = fullTime;
-    console.log("turnIndex after changing turn" + gameData.turnIndex);
     gameData.numOfTurns++;
 }
 
 
 function setTurnTime(gameData) {
-    console.log("start time: " + gameData.players[gameData.turnIndex].startTime);
-    console.log("end time: " + gameData.players[gameData.turnIndex].endTime);
 
     //if (turnIndex === players[1].index) {
     let start = gameData.players[gameData.turnIndex].startTime.split(":");
@@ -558,15 +529,11 @@ function playerHasNo2PlusCards(player, numOfPlayers, deck) {
 function checkPlayerWin(player, num, gameData) {
     gameData.players[gameData.turnIndex].endTime = fullTime;
     setTurnTime(gameData);
-    console.log("**checkPlayerWin**")
     if (player.cards.length === 0) {
-        console.log("***no cards left for player: " + player.index);
         player.noCardsLeft = true;
         gameData.playersWithCards--;
-        console.log("gameData.playersWithCards = " + gameData.playersWithCards);
         if (gameData.playersWithCards === 1) {
             gameData.gameOver = true;
-            console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@ ---- GAME --- OVER ----@@@@@@@@@@@@@@@@@@@@@@")
             //stopTheGame(gameData);
         }
         else {
@@ -621,7 +588,6 @@ function drawOpeningCard(gameData) {
 }
 
 function checkStatusOnTableDeckClicked(playerName, gameData) {
-    // console.log("*****checkStatusOnTableDeckClicked*****");
     if (!gameData.gameOver) {
         let isPlayerTurn = checkPlayerTurn(playerName, gameData);
         if (isPlayerTurn) {
@@ -648,7 +614,6 @@ function checkStatusOnTableDeckClicked(playerName, gameData) {
 
 function checkPlayerCards(playerIndex, gameData) {
     const cards = gameData.players[playerIndex].cards;
-    console.log(cards);
     let res = false;
     for (let i = 0; i < cards.length; i++) {
         if (cards[i].value === gameData.cardOnTop.value || cards[i].color === gameData.cardOnTop.color ||
@@ -661,17 +626,14 @@ function checkPlayerCards(playerIndex, gameData) {
 }
 
 function checkPlayerTurn(player, gameData) {
-    console.log("checkPlayerTurn");
-    console.log(" turnIndex " + gameData.turnIndex);
     const playerIndex = gameData.playersName.findIndex((pl) => pl === player);
-    console.log(" playerIndex " + playerIndex);
 
     let res = false;
     if (gameData.turnIndex === playerIndex) {
         res = true;
     }
     else {
-        console.log("Not your turn!!!!!!!!!!!!!!!!!!!!!!");
+        //console.log("Not your turn!!!!!!!!!!!!!!!!!!!!!!");
     }
     return res;
 }
@@ -903,7 +865,6 @@ function rotateArrow() {
     }
     transformArrow = newTransformAroow;
     setStateInBoardCB('transformArrow', newTransformAroow, false);
-    //console.log("rotating");
 }
 
 function resizeCards(currGame) {
@@ -914,7 +875,6 @@ function resizeCards(currGame) {
 
     for (let i = 0; i < currGame.numOfPlayers; i++) {
         if (currGame.gameData.gameStarted) {
-            //console.log("calling checkSpacesBetweenCards");
             checkSpacesBetweenCards(currGame.gameData,resizeArr, i);
         }
         else
@@ -924,40 +884,31 @@ function resizeCards(currGame) {
         cardMarginLeft[i] = -(cardWidth - cardSpace - resizeArr[i]);
     }
     return cardMarginLeft;
-    //setStateInBoardCB('cardMarginLeft', cardMarginLeft, false);
 }
 
 function checkSpacesBetweenCards(gameData, resizeArr, index) {
-    //console.log("@@@@@@@@@@    checkSpacesBetweenCards     @@@@@@@@@@@@@@");
-    //console.log("IN RESIZE -> gameData.players[index] = " +  gameData.players[index].cards.length);
     if (gameData.players[index].cards.length > 21) {
-        //console.log("gameData.players[index].cards.length > 21");
         resizeArr[index] -= 40;
     }
     else if (gameData.players[index].cards.length > 17) {
-        //console.log("gameData.players[index].cards.length > 17");
         resizeArr[index] -= 35;
     }
     else if (gameData.players[index].cards.length > 14) {
-        //console.log("gameData.players[index].cards.length > 14");
         resizeArr[index] -= 30;
     }
     else if (gameData.players[index].cards.length > 11) {
-        //console.log("gameData.players[index].cards.length > 11");
         resizeArr[index] -= 25;
     }
     else if (gameData.players[index].cards.length > 8) {
-        //console.log("gameData.players[index].cards.length > 8");
 
         resizeArr[index] -= 12;
     }
     else if (gameData.players[index].cards.length < 5) {
-        //console.log("gameData.plyers[index].cards.length > 5");
         resizeArr[index] += 25;
     }
     else
     {
-        ////console.log("NO RESIZE HERE");
+        //console.log("NO RESIZE HERE");
     }
 }
 

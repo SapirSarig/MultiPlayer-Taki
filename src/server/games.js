@@ -32,7 +32,6 @@ gamesManagement.post('/addGame', auth.userAuthentication, (req, res) => {
 
     bodyObj.id = gameId;
     gameId++;
-    console.log('#$@#%#@$%#$%$#%#$%#$%', bodyObj)
     gamesList.push(bodyObj);
     res.sendStatus(201);
 });
@@ -40,18 +39,13 @@ gamesManagement.post('/addGame', auth.userAuthentication, (req, res) => {
 gamesManagement.post('/updateGameData', (req, res) => {
     const bodyObj = JSON.parse(req.body);
     const gameIndex = gamesList.findIndex(game => game.name === bodyObj.name);
-    //console.log("BEFORE updating " + gamesList[gameIndex].numOfRegisterd)
     gamesList[gameIndex] = bodyObj;
-    //console.log("AFTER updating " + gamesList[gameIndex].numOfRegisterd)
     res.sendStatus(201);
 });
 
 gamesManagement.post('/removeGame', (req, res) => {
     const gameIndex = findGameIndex(req);
-    //console.log(gamesList[gameIndex]);
-    //console.log("num of games BEFORE: " + gamesList.length);
     gamesList.splice(gameIndex, 1);
-    //console.log("num of games AFTER: " + gamesList.length);
     res.sendStatus(201);
 });
 
@@ -104,14 +98,11 @@ function findCurrGame(bodyObj) {
 
 
 gamesManagement.post('/updatePlayerWatcher', (req, res) => {
-    console.log("==========updatePlayerWatcher=========")
     const bodyObj = JSON.parse(req.body);
     const userName = bodyObj.userName;
     const gameIndex = gamesList.findIndex(game => game.id === Number(bodyObj.gameId));
     const playerIndex = gamesList[gameIndex].gameData.players.findIndex(player => player.name === userName)
-    console.log("gamesList[gameIndex].gameData.playersName[playerIndex].watcher = " + gamesList[gameIndex].gameData.playersName[playerIndex].watcher)
     gamesList[gameIndex].gameData.players[playerIndex].watcher = true;
-    console.log("gamesList[gameIndex].gameData.playersName[playerIndex].watcher = " + gamesList[gameIndex].gameData.playersName[playerIndex].watcher)
 
     res.sendStatus(200);
 });
@@ -138,13 +129,9 @@ gamesManagement.post('/updateActivePlayers', (req, res) => {
 });
 
 gamesManagement.get('/getCardMarginLeftByGameId', (req, res) => {
-    //console.log("-------------    getCardMarginLeftByGameId   ----------------");
     const id = req.query.id;
     const currentGame = gamesList.find(game => game.id === Number(id));
-    //console.log("-------------    BEFORE RESIZE   ----------------");
     let CardMarginLeft = GameLogic.resizeCards(currentGame);
-    // console.log("-------------    AFTER RESIZE   ----------------");
-    // console.log("CardMarginLeft = " + CardMarginLeft);
     res.json(CardMarginLeft);
 });
 
@@ -172,7 +159,6 @@ gamesManagement.get('/getChat', auth.userAuthentication, (req, res) => {
 
 gamesManagement.post('/setInputInChat', auth.userAuthentication, (req, res) => {
     const bodyObj = JSON.parse(req.body);
-    console.log("body.gameId = "+ bodyObj.gameId);
     const userInfo = auth.getUserInfo(req.session.id);
     const newContent = {
         user: userInfo,
@@ -183,10 +169,7 @@ gamesManagement.post('/setInputInChat', auth.userAuthentication, (req, res) => {
 });
 
 function addContentToGamesChat(newContent, gameId) {
-    console.log("gameID = " + gameId);
     const gameIndex = gamesList.findIndex(game => game.id === Number(gameId));
-    console.log("gameIndex = " + gameIndex);
-    console.log("newContent = " + newContent);
 
     gamesList[gameIndex].gameData.chatContent.push(newContent);
 }

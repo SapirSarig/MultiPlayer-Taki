@@ -14,7 +14,6 @@ app.use(bodyParser.text());
 app.use(express.static(path.resolve(__dirname, "..", "public")));
 
 // app.get('/',auth.userAuthentication, (req, res, next) => {		
-// 	console.log('root', req.session.id);	
 // 	next();
 // })
 

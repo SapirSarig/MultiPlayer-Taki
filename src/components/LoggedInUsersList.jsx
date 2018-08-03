@@ -22,7 +22,6 @@ export default class LoggedInUsersList extends React.Component {
     }
 
     getUserListContent() {
-        //console.log("getUserListContent")
         return fetch('/users/allUsers', {method: 'GET', credentials: 'include'})
         .then((response) => {
             if (!response.ok){

@@ -22,7 +22,6 @@ export default class ChatInput extends React.Component {
     }   
 //
     sendText(e) {
-        console.log("^^^^^^^^^^^^^^^^^  SNED TEXT ^^^^^^^^^^^^^^^^^^^^^")
         e.preventDefault();
         this.setState(()=>({sendInProgress: true}));
         const inputText = this.inputElement.value;

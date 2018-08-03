@@ -23,7 +23,6 @@ export default class Lobby extends React.Component {
         else {
             this.setState(()=>{return{ hideCreateNewGameForm: true }});
         }
-        //console.log(this.state.hidden);
     }
 
     render() {

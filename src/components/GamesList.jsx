@@ -23,7 +23,6 @@ export default class GamesList extends React.Component {
     }
 
     getGameListContent() {
-        //console.log("getGameListContent")
         return fetch('/games/allGames', { method: 'GET', credentials: 'include' })
             .then((response) => {
                 if (!response.ok) {
